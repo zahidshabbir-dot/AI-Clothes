@@ -89,7 +89,14 @@
             "drawer_divider_color": "",
             "shopx_thumbnail_column": 2,
             "shopx_card_column": 4,
-            "shopx_card_badge": "NEW"
+            "shopx_card_badge": "NEW",
+            "shopx_mega_trigger": "Shop",
+            "shopx_column_1_heading": "Products",
+            "shopx_column_2_heading": "Trending",
+            "shopx_column_3_heading": "Collections",
+            "shopx_column_4_heading": "Featured",
+            "shopx_card_1_title": "New Releases",
+            "shopx_card_2_title": "Best Sellers"
           },
           "blocks": {}
         }

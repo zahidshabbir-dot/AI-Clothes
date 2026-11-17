@@ -188,3 +188,98 @@
 .shopx-mega-menu--simple .shopx-mega-menu__link {
   font-size: 0.875rem;
 }
+
+/* Configured layout, sized to the Figma mega menu. */
+.shopx-mega-menu--configured {
+  grid-auto-columns: auto;
+  justify-content: space-between;
+  padding-block: 1rem 1.5rem;
+}
+
+.shopx-mega-menu--configured .shopx-mega-menu__column {
+  padding-inline: 3.25rem;
+}
+
+.shopx-mega-menu--configured .shopx-mega-menu__column:first-child {
+  padding-inline-start: 0;
+}
+
+.shopx-mega-menu--configured .shopx-mega-menu__column:last-child {
+  padding-inline-end: 0;
+}
+
+.shopx-mega-menu--configured .shopx-mega-menu__heading {
+  margin-block-end: 1.75rem;
+  font-size: 1rem;
+}
+
+.shopx-mega-menu--configured .shopx-mega-menu__list {
+  gap: 1.0625rem;
+}
+
+.shopx-mega-menu--configured .shopx-mega-menu__link {
+  font-size: 0.875rem;
+}
+
+.shopx-mega-menu--configured .shopx-mega-menu__column--thumbnails {
+  width: 18.125rem;
+  box-sizing: content-box;
+}
+
+.shopx-mega-menu--configured .shopx-mega-menu__column--thumbnails .shopx-mega-menu__list {
+  gap: 0;
+}
+
+.shopx-mega-menu--configured .shopx-mega-menu__thumbnail-link {
+  gap: 0.9375rem;
+  min-height: 2.625rem;
+  padding-block: 0.8125rem;
+  color: rgb(var(--color-foreground-rgb) / 0.75);
+  font-size: 0.875rem;
+}
+
+.shopx-mega-menu--configured .shopx-mega-menu__thumbnail-link:hover {
+  color: var(--color-foreground);
+}
+
+.shopx-mega-menu--configured .shopx-mega-menu__thumbnail {
+  width: 2.625rem;
+  height: 2.625rem;
+  border: 1px solid rgb(var(--color-foreground-rgb) / 0.2);
+}
+
+.shopx-mega-menu--configured .shopx-mega-menu__column--cards {
+  min-width: 0;
+}
+
+.shopx-mega-menu--configured .shopx-mega-menu__column--cards .shopx-mega-menu__list {
+  gap: 1.125rem;
+}
+
+.shopx-mega-menu--configured .shopx-mega-menu__card {
+  width: 18.125rem;
+  aspect-ratio: 290 / 157;
+  padding: 1rem 1rem 1.25rem;
+}
+
+.shopx-mega-menu--configured .shopx-mega-menu__card-title {
+  font-size: 1.3125rem;
+}
+
+.shopx-mega-menu--configured .shopx-mega-menu__card-arrow {
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+.shopx-mega-menu--configured .shopx-mega-menu__card-arrow svg {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.shopx-mega-menu--configured .shopx-mega-menu__badge {
+  inset-block-start: 1rem;
+  inset-inline-start: 1rem;
+  padding: 0.125rem 0.5rem;
+  border: 0;
+  font-size: 0.8125rem;
+}
