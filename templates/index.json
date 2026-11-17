@@ -297,7 +297,7 @@
         "button_background_color": "#392915",
         "button_text_color": "#ffffff",
         "padding_top": 124,
-        "padding_bottom": 0
+        "padding_bottom": 124
       }
     },
     "shopx_gallery": {
