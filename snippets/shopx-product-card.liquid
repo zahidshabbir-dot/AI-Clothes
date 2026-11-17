@@ -6,13 +6,9 @@
   @param {string} [new_badge_tag] - Product tag that shows the new badge.
   @param {string} [new_badge_label] - New badge text.
   @param {string} quick_add_label - Quick add button text.
-  @param {boolean} [is_first] - Loads the first image eagerly.
+  @param {string} [price_from_label] - Shown before the price when variant prices differ.
 {%- enddoc -%}
 {%- liquid
-  assign image_loading = 'lazy'
-  if is_first
-    assign image_loading = 'eager'
-  endif
   assign size_option = product.options_by_name['Size']
   assign color_option = product.options_by_name['Color']
 -%}
@@ -33,7 +29,7 @@
             class: 'shopx-product-card__image',
             widths: '285, 450, 570, 900',
             sizes: '(min-width: 750px) 285px, 70vw',
-            loading: image_loading,
+            loading: 'lazy',
             alt: ''
         }}
       {%- endif -%}
@@ -54,14 +50,21 @@
     {%- if product.available -%}
       <div class="shopx-product-card__quick-add">
         {%- form 'product', product, class: 'shopx-product-card__form' -%}
-          <button
-            class="shopx-product-card__quick-add-button"
-            type="submit"
-            name="id"
-            value="{{ product.selected_or_first_available_variant.id }}"
-          >
-            {{- quick_add_label -}}
-          </button>
+          {%- comment -%}
+            With sizes, the shopper must pick one, so the label is not a button.
+          {%- endcomment -%}
+          {%- if size_option != blank -%}
+            <p class="shopx-product-card__quick-add-button">{{ quick_add_label }}</p>
+          {%- else -%}
+            <button
+              class="shopx-product-card__quick-add-button"
+              type="submit"
+              name="id"
+              value="{{ product.selected_or_first_available_variant.id }}"
+            >
+              {{- quick_add_label -}}
+            </button>
+          {%- endif -%}
 
           {%- if size_option != blank -%}
             {%- assign size_key = 'option' | append: size_option.position -%}
@@ -99,6 +102,9 @@
       <p class="shopx-product-card__meta">{{ color_option.values | join: ' / ' }}</p>
     {%- endif -%}
     <p class="shopx-product-card__price">
+      {%- if product.price_varies and price_from_label != blank -%}
+        <span class="shopx-product-card__from">{{ price_from_label }}</span>
+      {%- endif -%}
       {{ product.price | money }}
       {%- if product.compare_at_price > product.price -%}
         <s class="shopx-product-card__compare-price">{{ product.compare_at_price | money }}</s>

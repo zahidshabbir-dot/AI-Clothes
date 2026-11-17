@@ -23,7 +23,7 @@
             "letter_spacing": "normal",
             "case": "none",
             "text_color": "#202020",
-            "countdown_end": "2026-12-31T23:59:00+05:00",
+            "countdown_end": "",
             "button_label": "Shop Now"
           },
           "blocks": {}
@@ -100,7 +100,9 @@
         "background_color_top": "#ffffff",
         "enable_transparent_header_home": false,
         "enable_transparent_header_product": false,
-        "enable_transparent_header_collection": false
+        "enable_transparent_header_collection": false,
+        "show_search_on_desktop": false,
+        "show_account_on_mobile": true
       }
     }
   },

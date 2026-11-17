@@ -93,6 +93,7 @@
 }
 
 .shopx-product-card__quick-add-button {
+  margin: 0;
   padding: 0.625rem 0.875rem;
   background-color: var(--shopx-product-carousel-button-background);
   color: var(--shopx-product-carousel-button-text);
@@ -149,6 +150,10 @@
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
+}
+
+.shopx-product-card__from {
+  font-weight: 400;
 }
 
 .shopx-product-card__compare-price {

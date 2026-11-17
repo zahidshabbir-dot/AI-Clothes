@@ -117,6 +117,11 @@
   font-size: 0.875rem;
 }
 
+.shopx-footer__message ul {
+  margin: 0;
+  padding-inline-start: 1rem;
+}
+
 .shopx-footer__links {
   display: flex;
   flex-direction: column;

@@ -250,7 +250,8 @@
         "previous_label": "Previous products",
         "next_label": "Next products",
         "tab_active_background_color": "#f2f3f4",
-        "line_color": "#e8e8e8"
+        "line_color": "#e8e8e8",
+        "price_from_label": "From"
       },
       "blocks": {
         "tab_all": {
@@ -341,7 +342,7 @@
       "settings": {
         "heading": "Up to 50% Off",
         "subheading": "Hurry up! Offers end in",
-        "countdown_end": "2026-12-31T23:59:00+05:00",
+        "countdown_end": "",
         "days_label": "Days",
         "hours_label": "Hours",
         "minutes_label": "Minutes",

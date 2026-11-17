@@ -208,6 +208,14 @@
     assign class = class | append: ' ' | append: collapse_header_paddings_class
   endif
 
+  # shopx: display options from the header settings.
+  unless section.settings.show_search_on_desktop
+    assign class = class | append: ' shopx-header--hide-desktop-search'
+  endunless
+  unless section.settings.show_account_on_mobile
+    assign class = class | append: ' shopx-header--hide-mobile-account'
+  endunless
+
   # Determine transparent background value
   assign top_transparent = false
   assign bottom_transparent = false
@@ -1387,6 +1395,13 @@
       "default": "Store location"
     },
     {
+      "type": "checkbox",
+      "id": "show_account_on_mobile",
+      "label": "Show account icon on mobile",
+      "info": "The mobile menu has no account link, so turning this off leaves customers only the footer link.",
+      "default": true
+    },
+    {
       "type": "header",
       "content": "t:content.search"
     },
@@ -1394,6 +1409,13 @@
       "type": "checkbox",
       "id": "show_search",
       "label": "t:settings.search_icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search_on_desktop",
+      "label": "Show search on desktop",
+      "info": "Turn off to show the search icon on mobile only.",
       "default": true
     },
     {

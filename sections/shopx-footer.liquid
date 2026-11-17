@@ -30,11 +30,18 @@
         <ul class="shopx-footer__social" role="list">
           {%- for block in social_blocks -%}
             {%- if block.settings.icon != blank and block.settings.link != blank -%}
+              {%- liquid
+                assign link_host = block.settings.link | split: '/' | slice: 2 | first
+                assign social_label = block.settings.label
+                if social_label == blank
+                  assign social_label = block.settings.icon.alt | default: link_host
+                endif
+              -%}
               <li {{ block.shopify_attributes }}>
                 <a
                   class="shopx-footer__social-link"
                   href="{{ block.settings.link }}"
-                  aria-label="{{ block.settings.label | escape }}"
+                  aria-label="{{ social_label | escape }}"
                 >
                   {{
                     block.settings.icon
@@ -92,7 +99,9 @@
         {%- if form.posted_successfully? -%}
           <p class="shopx-footer__message" role="status">{{ section.settings.success_message }}</p>
         {%- elsif form.errors -%}
-          <p class="shopx-footer__message" role="alert">{{ form.errors.translated_fields.email }} {{ form.errors.messages.email }}</p>
+          <div class="shopx-footer__message" role="alert">
+            {{ form.errors | default_errors }}
+          </div>
         {%- endif -%}
       {%- endform -%}
     </div>
@@ -378,7 +387,7 @@
           "type": "text",
           "id": "label",
           "label": "Accessible name",
-          "info": "Read by screen readers, for example YouTube."
+          "info": "Read by screen readers, for example YouTube. Empty uses the icon's alt text or the link's website."
         }
       ]
     }
