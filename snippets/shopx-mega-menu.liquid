@@ -1,0 +1,113 @@
+{%- doc -%}
+  ShopX mega menu. Each child link of the top-level item is a column, and its own child links
+  are the rows. Images come from the linked collection or product.
+
+  @param {object} parent_link - Top-level menu link.
+  @param {number} [thumbnail_column] - Column number that shows round images. 0 for none.
+  @param {number} [card_column] - Column number that shows image cards. 0 for none.
+  @param {string} [card_badge] - Badge text on the first card.
+{%- enddoc -%}
+{%- liquid
+  assign has_third_level = false
+  for column_link in parent_link.links
+    if column_link.links.size > 0
+      assign has_third_level = true
+      break
+    endif
+  endfor
+-%}
+
+{%- unless has_third_level -%}
+  {%- comment -%} Two-level menus show their links as one simple list. {%- endcomment -%}
+  <ul class="shopx-mega-menu shopx-mega-menu--simple" role="list">
+    {%- for column_link in parent_link.links -%}
+      <li class="shopx-mega-menu__item">
+        <a
+          class="shopx-mega-menu__link{% if column_link.active %} shopx-mega-menu__link--active{% endif %}"
+          href="{{ column_link.url }}"
+          {% if column_link.active %}aria-current="page"{% endif %}
+        >
+          {{- column_link.title -}}
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+{%- else -%}
+<div class="shopx-mega-menu">
+  {%- for column_link in parent_link.links -%}
+    {%- liquid
+      assign column_style = 'list'
+      if forloop.index == thumbnail_column
+        assign column_style = 'thumbnails'
+      elsif forloop.index == card_column
+        assign column_style = 'cards'
+      endif
+    -%}
+    <div class="shopx-mega-menu__column shopx-mega-menu__column--{{ column_style }}">
+      {%- if column_link.url != blank and column_link.url != '#' -%}
+        <a class="shopx-mega-menu__heading" href="{{ column_link.url }}">{{ column_link.title }}</a>
+      {%- else -%}
+        <p class="shopx-mega-menu__heading">{{ column_link.title }}</p>
+      {%- endif -%}
+
+      {%- if column_link.links.size > 0 -%}
+        <ul class="shopx-mega-menu__list" role="list">
+          {%- for item_link in column_link.links -%}
+            {%- assign item_image = item_link.object.featured_image -%}
+            <li class="shopx-mega-menu__item">
+              {%- case column_style -%}
+                {%- when 'thumbnails' -%}
+                  <a class="shopx-mega-menu__thumbnail-link" href="{{ item_link.url }}">
+                    {%- if item_image != blank -%}
+                      {{
+                        item_image
+                        | image_url: width: 96
+                        | image_tag:
+                          class: 'shopx-mega-menu__thumbnail',
+                          width: 32,
+                          height: 32,
+                          loading: 'lazy',
+                          alt: ''
+                      }}
+                    {%- endif -%}
+                    <span>{{ item_link.title }}</span>
+                  </a>
+                {%- when 'cards' -%}
+                  <a class="shopx-mega-menu__card" href="{{ item_link.url }}">
+                    {%- if item_image != blank -%}
+                      {{
+                        item_image
+                        | image_url: width: 640
+                        | image_tag:
+                          class: 'shopx-mega-menu__card-image',
+                          widths: '214, 428, 640',
+                          sizes: '214px',
+                          loading: 'lazy',
+                          alt: ''
+                      }}
+                    {%- endif -%}
+                    {%- if forloop.first and card_badge != blank -%}
+                      <span class="shopx-mega-menu__badge">{{ card_badge }}</span>
+                    {%- endif -%}
+                    <span class="shopx-mega-menu__card-title">{{ item_link.title }}</span>
+                    <span class="shopx-mega-menu__card-arrow" aria-hidden="true">
+                      {%- render 'shopx-icon-arrow' -%}
+                    </span>
+                  </a>
+                {%- else -%}
+                  <a
+                    class="shopx-mega-menu__link{% if item_link.active %} shopx-mega-menu__link--active{% endif %}"
+                    href="{{ item_link.url }}"
+                    {% if item_link.active %}aria-current="page"{% endif %}
+                  >
+                    {{- item_link.title -}}
+                  </a>
+              {%- endcase -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  {%- endfor -%}
+</div>
+{%- endunless -%}

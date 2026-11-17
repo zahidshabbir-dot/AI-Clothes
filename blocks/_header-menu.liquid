@@ -92,6 +92,11 @@
       endif
     %}
 
+    {%- comment -%} shopx: stylesheet for the column mega menu style. {%- endcomment -%}
+    {%- if block_settings.menu_style == 'shopx_columns' -%}
+      {{ 'shopx-mega-menu.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+
     {% capture children %}
       {% for link in block_settings.menu.links %}
         <li
@@ -151,17 +156,27 @@
                     class="mega-menu__grid"
                     data-menu-grid-id="{{ list_id }}"
                   >
-                    {% render 'mega-menu-list',
-                      parent_link: link,
-                      id: list_id,
-                      section: section,
-                      grid_columns_count: 6,
-                      grid_columns_count_tablet: 4,
-                      grid_columns_count_collection_images: 8,
-                      menu_content_type: menu_content_type,
-                      content_aspect_ratio: ratio,
-                      image_border_radius: image_border_radius
-                    %}
+                    {%- comment -%} shopx: column mega menu style. {%- endcomment -%}
+                    {%- if block_settings.menu_style == 'shopx_columns' -%}
+                      {% render 'shopx-mega-menu',
+                        parent_link: link,
+                        thumbnail_column: block_settings.shopx_thumbnail_column,
+                        card_column: block_settings.shopx_card_column,
+                        card_badge: block_settings.shopx_card_badge
+                      %}
+                    {%- else -%}
+                      {% render 'mega-menu-list',
+                        parent_link: link,
+                        id: list_id,
+                        section: section,
+                        grid_columns_count: 6,
+                        grid_columns_count_tablet: 4,
+                        grid_columns_count_collection_images: 8,
+                        menu_content_type: menu_content_type,
+                        content_aspect_ratio: ratio,
+                        image_border_radius: image_border_radius
+                      %}
+                    {%- endif -%}
                   </div>
                 </div>
               </div>
@@ -1101,9 +1116,41 @@
         {
           "value": "featured_collections",
           "label": "t:options.featured_collections"
+        },
+        {
+          "value": "shopx_columns",
+          "label": "Columns with images"
         }
       ],
       "default": "collection_images"
+    },
+    {
+      "type": "range",
+      "id": "shopx_thumbnail_column",
+      "label": "Column with round images",
+      "info": "0 for none. Images come from the linked collections or products.",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "default": 2,
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}"
+    },
+    {
+      "type": "range",
+      "id": "shopx_card_column",
+      "label": "Column with image cards",
+      "info": "0 for none.",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}"
+    },
+    {
+      "type": "text",
+      "id": "shopx_card_badge",
+      "label": "Badge on first card",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}"
     },
     {
       "type": "select",

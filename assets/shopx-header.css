@@ -33,7 +33,10 @@
     line-height: normal;
   }
 
-  .header__row--top .menu-list__link--active {
+  .header__row--top .menu-list__link--active,
+  .header__row--top .menu-list__link:hover,
+  .header__row--top .menu-list__link:focus-visible,
+  .header__row--top .menu-list__list-item:has([aria-expanded='true']) .menu-list__link {
     border-block-end-color: currentcolor;
   }
 }
