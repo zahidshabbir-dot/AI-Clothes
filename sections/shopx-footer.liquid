@@ -2,6 +2,16 @@
 
 {%- liquid
   assign social_blocks = section.blocks | where: 'type', 'social_link'
+  assign has_social_links = false
+  for block in social_blocks
+    if block.settings.icon != blank and block.settings.link != blank
+      assign has_social_links = true
+    endif
+  endfor
+  assign has_payment_icons = false
+  if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0
+    assign has_payment_icons = true
+  endif
 -%}
 
 <footer
@@ -14,9 +24,9 @@
     --shopx-footer-text-color: {{ section.settings.text_color }};
   "
 >
-  {%- if social_blocks.size > 0 or section.settings.show_payment_icons -%}
+  {%- if has_social_links or has_payment_icons -%}
     <div class="shopx-footer__top">
-      {%- if social_blocks.size > 0 -%}
+      {%- if has_social_links -%}
         <ul class="shopx-footer__social" role="list">
           {%- for block in social_blocks -%}
             {%- if block.settings.icon != blank and block.settings.link != blank -%}
@@ -43,7 +53,7 @@
         </ul>
       {%- endif -%}
 
-      {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+      {%- if has_payment_icons -%}
         <ul class="shopx-footer__payments" role="list">
           {%- for payment_type in shop.enabled_payment_types -%}
             <li>{{ payment_type | payment_type_svg_tag: class: 'shopx-footer__payment-icon' }}</li>
@@ -87,20 +97,55 @@
       {%- endform -%}
     </div>
 
-    {%- assign menu_settings = 'menu_1,menu_2,menu_3' | split: ',' -%}
-    {%- for menu_setting in menu_settings -%}
-      {%- assign footer_menu = section.settings[menu_setting] -%}
-      {%- if footer_menu != blank and footer_menu.links.size > 0 -%}
-        <nav class="shopx-footer__menu" aria-label="{{ footer_menu.title | escape }}">
-          <h2 class="shopx-footer__heading">{{ footer_menu.title }}</h2>
-          <ul class="shopx-footer__links" role="list">
-            {%- for link in footer_menu.links -%}
-              <li>
-                <a class="shopx-footer__link" href="{{ link.url }}">{{ link.title }}</a>
-              </li>
-            {%- endfor -%}
-          </ul>
-        </nav>
+    {%- assign column_names = 'menu_1,account,menu_2,menu_3' | split: ',' -%}
+    {%- for column_name in column_names -%}
+      {%- if column_name == 'account' -%}
+        {%- if section.settings.show_account_links and shop.customer_accounts_enabled -%}
+          <nav class="shopx-footer__menu" aria-label="{{ section.settings.account_heading | escape }}">
+            <h2 class="shopx-footer__heading">{{ section.settings.account_heading }}</h2>
+            <ul class="shopx-footer__links" role="list">
+              {%- if customer -%}
+                <li>
+                  <a class="shopx-footer__link" href="{{ routes.account_url }}">
+                    {{- section.settings.account_label -}}
+                  </a>
+                </li>
+                <li>
+                  <a class="shopx-footer__link" href="{{ routes.account_logout_url }}">
+                    {{- section.settings.logout_label -}}
+                  </a>
+                </li>
+              {%- else -%}
+                <li>
+                  <a class="shopx-footer__link" href="{{ routes.account_login_url }}">
+                    {{- section.settings.login_label -}}
+                  </a>
+                </li>
+                <li>
+                  <a class="shopx-footer__link" href="{{ routes.account_register_url }}">
+                    {{- section.settings.register_label -}}
+                  </a>
+                </li>
+              {%- endif -%}
+            </ul>
+          </nav>
+        {%- endif -%}
+      {%- else -%}
+        {%- assign footer_menu = section.settings[column_name] -%}
+        {%- assign heading_setting = column_name | append: '_heading' -%}
+        {%- assign menu_heading = section.settings[heading_setting] | default: footer_menu.title -%}
+        {%- if footer_menu != blank and footer_menu.links.size > 0 -%}
+          <nav class="shopx-footer__menu" aria-label="{{ menu_heading | escape }}">
+            <h2 class="shopx-footer__heading">{{ menu_heading }}</h2>
+            <ul class="shopx-footer__links" role="list">
+              {%- for link in footer_menu.links -%}
+                <li>
+                  <a class="shopx-footer__link" href="{{ link.url }}">{{ link.title }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        {%- endif -%}
       {%- endif -%}
     {%- endfor -%}
   </div>
@@ -116,6 +161,14 @@
         {%- for link in section.settings.legal_menu.links -%}
           <li>
             <a class="shopx-footer__link" href="{{ link.url }}">{{ link.title }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- elsif section.settings.show_policy_links and shop.policies.size > 0 -%}
+      <ul class="shopx-footer__legal" role="list">
+        {%- for policy in shop.policies -%}
+          <li>
+            <a class="shopx-footer__link" href="{{ policy.url }}">{{ policy.title }}</a>
           </li>
         {%- endfor -%}
       </ul>
@@ -174,7 +227,12 @@
       "type": "link_list",
       "id": "menu_1",
       "label": "Menu 1",
-      "info": "The menu title is used as the column heading."
+      "info": "Shows the menu title as the heading unless you set one."
+    },
+    {
+      "type": "text",
+      "id": "menu_1_heading",
+      "label": "Menu 1 heading"
     },
     {
       "type": "link_list",
@@ -182,14 +240,72 @@
       "label": "Menu 2"
     },
     {
+      "type": "text",
+      "id": "menu_2_heading",
+      "label": "Menu 2 heading"
+    },
+    {
       "type": "link_list",
       "id": "menu_3",
       "label": "Menu 3"
     },
     {
+      "type": "text",
+      "id": "menu_3_heading",
+      "label": "Menu 3 heading"
+    },
+    {
+      "type": "header",
+      "content": "Account column"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account_links",
+      "label": "Show account links",
+      "info": "Uses Shopify customer accounts. Shown after menu 1.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "account_heading",
+      "label": "Heading",
+      "default": "My Account"
+    },
+    {
+      "type": "text",
+      "id": "login_label",
+      "label": "Log in label",
+      "default": "Log In"
+    },
+    {
+      "type": "text",
+      "id": "register_label",
+      "label": "Register label",
+      "default": "Register"
+    },
+    {
+      "type": "text",
+      "id": "account_label",
+      "label": "Account label",
+      "default": "My account"
+    },
+    {
+      "type": "text",
+      "id": "logout_label",
+      "label": "Log out label",
+      "default": "Log out"
+    },
+    {
       "type": "link_list",
       "id": "legal_menu",
-      "label": "Bottom bar menu"
+      "label": "Bottom bar menu",
+      "info": "Empty shows your store policies from Shopify."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_policy_links",
+      "label": "Show store policies when the bottom bar menu is empty",
+      "default": true
     },
     {
       "type": "header",

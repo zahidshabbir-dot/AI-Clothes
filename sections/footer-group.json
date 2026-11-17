@@ -26,7 +26,17 @@
         "background_color": "#fcf9f7",
         "bottom_background_color": "#e9e1db",
         "heading_color": "#202020",
-        "text_color": "#4a4a4a"
+        "text_color": "#4a4a4a",
+        "menu_1_heading": "Help",
+        "menu_2": "main-menu",
+        "menu_2_heading": "Pages",
+        "show_account_links": true,
+        "account_heading": "My Account",
+        "login_label": "Log In",
+        "register_label": "Register",
+        "account_label": "My account",
+        "logout_label": "Log out",
+        "show_policy_links": true
       }
     }
   },
