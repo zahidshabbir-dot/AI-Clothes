@@ -1,0 +1,276 @@
+{{ 'shopx-footer.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign social_blocks = section.blocks | where: 'type', 'social_link'
+-%}
+
+<footer
+  class="shopx-footer"
+  style="
+    --shopx-footer-top-background: {{ section.settings.top_background_color }};
+    --shopx-footer-background: {{ section.settings.background_color }};
+    --shopx-footer-bottom-background: {{ section.settings.bottom_background_color }};
+    --shopx-footer-heading-color: {{ section.settings.heading_color }};
+    --shopx-footer-text-color: {{ section.settings.text_color }};
+  "
+>
+  {%- if social_blocks.size > 0 or section.settings.show_payment_icons -%}
+    <div class="shopx-footer__top">
+      {%- if social_blocks.size > 0 -%}
+        <ul class="shopx-footer__social" role="list">
+          {%- for block in social_blocks -%}
+            {%- if block.settings.icon != blank and block.settings.link != blank -%}
+              <li {{ block.shopify_attributes }}>
+                <a
+                  class="shopx-footer__social-link"
+                  href="{{ block.settings.link }}"
+                  aria-label="{{ block.settings.label | escape }}"
+                >
+                  {{
+                    block.settings.icon
+                    | image_url: width: 96
+                    | image_tag:
+                      class: 'shopx-footer__social-icon',
+                      width: 32,
+                      height: 32,
+                      loading: 'lazy',
+                      alt: ''
+                  }}
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+        <ul class="shopx-footer__payments" role="list">
+          {%- for payment_type in shop.enabled_payment_types -%}
+            <li>{{ payment_type | payment_type_svg_tag: class: 'shopx-footer__payment-icon' }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="shopx-footer__main">
+    <div class="shopx-footer__newsletter">
+      {%- if section.settings.newsletter_heading != blank -%}
+        <h2 class="shopx-footer__heading">{{ section.settings.newsletter_heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.newsletter_text != blank -%}
+        <p class="shopx-footer__newsletter-text">{{ section.settings.newsletter_text }}</p>
+      {%- endif -%}
+
+      {%- form 'customer', id: 'ShopxFooterNewsletter', class: 'shopx-footer__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <label class="visually-hidden" for="ShopxFooterNewsletterEmail">
+          {{- section.settings.email_label -}}
+        </label>
+        <input
+          id="ShopxFooterNewsletterEmail"
+          class="shopx-footer__input"
+          type="email"
+          name="contact[email]"
+          placeholder="{{ section.settings.email_label | escape }}"
+          autocomplete="email"
+          required
+        >
+        <button class="shopx-footer__submit" type="submit">
+          {{- section.settings.subscribe_label -}}
+        </button>
+        {%- if form.posted_successfully? -%}
+          <p class="shopx-footer__message" role="status">{{ section.settings.success_message }}</p>
+        {%- elsif form.errors -%}
+          <p class="shopx-footer__message" role="alert">{{ form.errors.translated_fields.email }} {{ form.errors.messages.email }}</p>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+
+    {%- assign menu_settings = 'menu_1,menu_2,menu_3' | split: ',' -%}
+    {%- for menu_setting in menu_settings -%}
+      {%- assign footer_menu = section.settings[menu_setting] -%}
+      {%- if footer_menu != blank and footer_menu.links.size > 0 -%}
+        <nav class="shopx-footer__menu" aria-label="{{ footer_menu.title | escape }}">
+          <h2 class="shopx-footer__heading">{{ footer_menu.title }}</h2>
+          <ul class="shopx-footer__links" role="list">
+            {%- for link in footer_menu.links -%}
+              <li>
+                <a class="shopx-footer__link" href="{{ link.url }}">{{ link.title }}</a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  <div class="shopx-footer__bottom">
+    <p class="shopx-footer__copyright">
+      &copy;{{ 'now' | date: '%Y' }}
+      <span class="shopx-footer__shop-name">{{ shop.name }}</span>
+      {{ section.settings.copyright_text }}
+    </p>
+    {%- if section.settings.legal_menu != blank -%}
+      <ul class="shopx-footer__legal" role="list">
+        {%- for link in section.settings.legal_menu.links -%}
+          <li>
+            <a class="shopx-footer__link" href="{{ link.url }}">{{ link.title }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "ShopX footer",
+  "tag": "section",
+  "class": "shopx-footer-section",
+  "enabled_on": {
+    "groups": [
+      "footer"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email field label",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "subscribe_label",
+      "label": "Subscribe button label",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Thanks for subscribing."
+    },
+    {
+      "type": "header",
+      "content": "Menus"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_1",
+      "label": "Menu 1",
+      "info": "The menu title is used as the column heading."
+    },
+    {
+      "type": "link_list",
+      "id": "menu_2",
+      "label": "Menu 2"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_3",
+      "label": "Menu 3"
+    },
+    {
+      "type": "link_list",
+      "id": "legal_menu",
+      "label": "Bottom bar menu"
+    },
+    {
+      "type": "header",
+      "content": "Bottom bar"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Text after shop name",
+      "default": "All Rights reserved"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "info": "Uses the payment methods enabled in Shopify.",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "color",
+      "id": "top_background_color",
+      "label": "Top bar background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#fcf9f7"
+    },
+    {
+      "type": "color",
+      "id": "bottom_background_color",
+      "label": "Bottom bar background",
+      "default": "#e9e1db"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading colour",
+      "default": "#202020"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#4a4a4a"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "social_link",
+      "name": "Social link",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Accessible name",
+          "info": "Read by screen readers, for example YouTube."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ShopX footer"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,103 @@
+.shopx-comparison {
+  padding-block: var(--shopx-comparison-padding-top) var(--shopx-comparison-padding-bottom);
+  background-color: var(--shopx-comparison-background);
+}
+
+.shopx-comparison__inner {
+  max-width: 66rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+.shopx-comparison__heading {
+  margin: 0;
+  color: var(--shopx-comparison-heading-color);
+  font-family: var(--font-heading--family);
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.shopx-comparison__subheading {
+  margin: 1rem 0 0;
+  color: var(--shopx-comparison-muted-color);
+  font-family: var(--font-body--family);
+  font-size: 0.9375rem;
+  text-align: center;
+}
+
+.shopx-comparison__table-wrapper {
+  margin-block-start: 2.5rem;
+  overflow: hidden;
+  border-radius: 0.625rem;
+  background-color: var(--shopx-comparison-row-background);
+}
+
+.shopx-comparison__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-body--family);
+  font-size: 0.875rem;
+}
+
+.shopx-comparison__table th,
+.shopx-comparison__table td {
+  padding: 1.125rem 0.75rem;
+  text-align: center;
+}
+
+.shopx-comparison__table thead th,
+.shopx-comparison__corner {
+  background-color: var(--shopx-comparison-header-background);
+  color: var(--shopx-comparison-header-text);
+  font-family: var(--font-heading--family);
+  font-weight: 600;
+}
+
+.shopx-comparison__table tbody tr + tr {
+  border-block-start: 1px solid rgb(0 0 0 / 0.08);
+}
+
+.shopx-comparison__table tbody th {
+  color: var(--shopx-comparison-text-color);
+  font-weight: 500;
+  text-align: left;
+}
+
+.shopx-comparison__ours {
+  color: var(--shopx-comparison-highlight-color);
+  font-weight: 600;
+}
+
+.shopx-comparison__others {
+  color: var(--shopx-comparison-muted-color);
+}
+
+@media screen and (min-width: 750px) {
+  .shopx-comparison__heading {
+    font-size: 3rem;
+  }
+
+  .shopx-comparison__subheading {
+    font-size: 1.125rem;
+  }
+
+  .shopx-comparison__table-wrapper {
+    margin-block-start: 3.5rem;
+  }
+
+  .shopx-comparison__table {
+    font-size: 1.125rem;
+  }
+
+  .shopx-comparison__table th,
+  .shopx-comparison__table td {
+    width: 22%;
+    padding: 1.4375rem 2rem;
+  }
+
+  .shopx-comparison__table tbody th,
+  .shopx-comparison__corner {
+    width: auto;
+  }
+}

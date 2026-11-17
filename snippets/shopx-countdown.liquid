@@ -1,0 +1,40 @@
+{%- doc -%}
+  Countdown timer markup. Needs assets/shopx-countdown.js, which this snippet loads.
+  Hidden until the script confirms a valid future end time.
+
+  @param {string} end - End date and time, for example 2026-12-31T23:59:00+05:00.
+  @param {string} class_name - Class prefix of the calling section, for styling.
+  @param {string} days_label - Label under days.
+  @param {string} hours_label - Label under hours.
+  @param {string} minutes_label - Label under minutes.
+  @param {string} seconds_label - Label under seconds.
+{%- enddoc -%}
+{%- if end != blank -%}
+  <div
+    class="{{ class_name }}__countdown"
+    role="timer"
+    data-shopx-countdown
+    data-shopx-countdown-end="{{ end | escape }}"
+    hidden
+  >
+    {%- liquid
+      assign unit_names = 'days,hours,minutes,seconds' | split: ','
+      assign unit_labels = days_label | append: '|' | append: hours_label
+      assign unit_labels = unit_labels | append: '|' | append: minutes_label
+      assign unit_labels = unit_labels | append: '|' | append: seconds_label | split: '|'
+    -%}
+    {%- for unit_name in unit_names -%}
+      <span class="{{ class_name }}__unit">
+        <span
+          class="{{ class_name }}__number"
+          data-shopx-countdown-unit="{{ unit_name }}"
+        >00</span>
+        <span class="{{ class_name }}__unit-label">{{ unit_labels[forloop.index0] }}</span>
+      </span>
+      {%- unless forloop.last -%}
+        <span class="{{ class_name }}__separator" aria-hidden="true">:</span>
+      {%- endunless -%}
+    {%- endfor -%}
+  </div>
+  <script src="{{ 'shopx-countdown.js' | asset_url }}" type="module"></script>
+{%- endif -%}
