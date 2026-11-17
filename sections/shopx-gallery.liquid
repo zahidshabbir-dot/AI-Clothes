@@ -32,7 +32,12 @@
   <ul class="shopx-gallery__list" role="list">
     {%- for block in section.blocks -%}
       {%- if block.settings.image != blank -%}
-        {%- assign image_alt = block.settings.image.alt | default: '' -%}
+        {%- liquid
+          assign image_alt = block.settings.image.alt | default: ''
+          if block.settings.link != blank and image_alt == ''
+            assign image_alt = section.settings.handle | default: section.settings.heading
+          endif
+        -%}
         <li class="shopx-gallery__item" {{ block.shopify_attributes }}>
           {%- if block.settings.link != blank -%}
             <a class="shopx-gallery__link" href="{{ block.settings.link }}">

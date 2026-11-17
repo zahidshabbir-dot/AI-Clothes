@@ -90,7 +90,7 @@
                 new_badge_tag: section.settings.new_badge_tag,
                 new_badge_label: section.settings.new_badge_label,
                 quick_add_label: section.settings.quick_add_label,
-                is_first: forloop.first
+                price_from_label: section.settings.price_from_label
               %}
             </li>
           {%- endfor -%}
@@ -159,6 +159,13 @@
       "id": "quick_add_label",
       "label": "Quick add label",
       "default": "Quick Add"
+    },
+    {
+      "type": "text",
+      "id": "price_from_label",
+      "label": "Price from label",
+      "info": "Shown before the price when sizes or colours cost different amounts.",
+      "default": "From"
     },
     {
       "type": "text",
