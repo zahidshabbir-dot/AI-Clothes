@@ -30,7 +30,7 @@
   .shopx-hero--split .hero__container {
     display: grid;
     grid-template-columns: 734fr 706fr;
-    min-height: 45rem;
+    min-height: 46.25rem;
   }
 
   .shopx-hero--split .hero__media-grid,
