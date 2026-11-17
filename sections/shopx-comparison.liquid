@@ -1,0 +1,187 @@
+{{ 'shopx-comparison.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="shopx-comparison"
+  style="
+    --shopx-comparison-background: {{ section.settings.background_color }};
+    --shopx-comparison-heading-color: {{ section.settings.heading_color }};
+    --shopx-comparison-text-color: {{ section.settings.text_color }};
+    --shopx-comparison-muted-color: {{ section.settings.muted_text_color }};
+    --shopx-comparison-header-background: {{ section.settings.header_background_color }};
+    --shopx-comparison-header-text: {{ section.settings.header_text_color }};
+    --shopx-comparison-row-background: {{ section.settings.row_background_color }};
+    --shopx-comparison-highlight-color: {{ section.settings.highlight_color }};
+    --shopx-comparison-padding-top: {{ section.settings.padding_top }}px;
+    --shopx-comparison-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="shopx-comparison__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="shopx-comparison__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if section.settings.subheading != blank -%}
+      <p class="shopx-comparison__subheading">{{ section.settings.subheading }}</p>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="shopx-comparison__table-wrapper">
+        <table class="shopx-comparison__table">
+          <thead>
+            <tr>
+              <td class="shopx-comparison__corner"></td>
+              <th scope="col">{{ section.settings.our_column_label }}</th>
+              <th scope="col">{{ section.settings.other_column_label }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for block in section.blocks -%}
+              <tr {{ block.shopify_attributes }}>
+                <th scope="row">{{ block.settings.feature }}</th>
+                <td class="shopx-comparison__ours">{{ block.settings.our_value }}</td>
+                <td class="shopx-comparison__others">{{ block.settings.other_value }}</td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ShopX comparison table",
+  "tag": "section",
+  "class": "shopx-comparison-section",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "our_column_label",
+      "label": "Our column label"
+    },
+    {
+      "type": "text",
+      "id": "other_column_label",
+      "label": "Comparison column label"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#f7f4f2"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading colour",
+      "default": "#202020"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#202020"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Muted text colour",
+      "default": "#4a4a4a"
+    },
+    {
+      "type": "color",
+      "id": "header_background_color",
+      "label": "Table header background",
+      "default": "#392915"
+    },
+    {
+      "type": "color",
+      "id": "header_text_color",
+      "label": "Table header text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "row_background_color",
+      "label": "Row background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "highlight_color",
+      "label": "Our column text",
+      "default": "#392915"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "feature",
+          "label": "Feature"
+        },
+        {
+          "type": "text",
+          "id": "our_value",
+          "label": "Our value"
+        },
+        {
+          "type": "text",
+          "id": "other_value",
+          "label": "Comparison value"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ShopX comparison table",
+      "blocks": [
+        {
+          "type": "row"
+        },
+        {
+          "type": "row"
+        },
+        {
+          "type": "row"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

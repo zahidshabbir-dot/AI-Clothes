@@ -5,7 +5,7 @@ const HOURS_PER_DAY = 24;
 const SECONDS_PER_HOUR = SECONDS_PER_MINUTE * MINUTES_PER_HOUR;
 const SECONDS_PER_DAY = SECONDS_PER_HOUR * HOURS_PER_DAY;
 
-const countdownSelector = '[data-shopx-announcement-countdown]';
+const countdownSelector = '[data-shopx-countdown]';
 const intervalIdsByCountdown = new Map();
 
 function formatUnit(value) {
@@ -26,7 +26,7 @@ function updateCountdown(countdown, endTimestamp) {
 
   Object.entries(values).forEach(([unitName, value]) => {
     const unitElement = countdown.querySelector(
-      `[data-shopx-announcement-countdown-unit="${unitName}"]`
+      `[data-shopx-countdown-unit="${unitName}"]`
     );
     if (unitElement) {
       unitElement.textContent = formatUnit(value);
@@ -46,7 +46,7 @@ function startCountdown(countdown) {
     return;
   }
 
-  const endTimestamp = Date.parse(countdown.dataset.shopxAnnouncementCountdownEnd);
+  const endTimestamp = Date.parse(countdown.dataset.shopxCountdownEnd);
   if (Number.isNaN(endTimestamp) || updateCountdown(countdown, endTimestamp) === 0) {
     countdown.hidden = true;
     return;

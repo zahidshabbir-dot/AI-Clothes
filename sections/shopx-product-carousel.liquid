@@ -1,0 +1,274 @@
+{{ 'shopx-product-carousel.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'shopx-product-carousel.js' | asset_url }}" type="module"></script>
+
+{%- liquid
+  assign tab_blocks = section.blocks | where: 'type', 'tab'
+  assign show_tabs = false
+  if tab_blocks.size > 1
+    assign show_tabs = true
+  endif
+-%}
+
+<div
+  class="shopx-product-carousel"
+  data-shopx-product-carousel
+  style="
+    --shopx-product-carousel-background: {{ section.settings.background_color }};
+    --shopx-product-carousel-heading-color: {{ section.settings.heading_color }};
+    --shopx-product-carousel-text-color: {{ section.settings.text_color }};
+    --shopx-product-carousel-muted-color: {{ section.settings.muted_text_color }};
+    --shopx-product-carousel-button-background: {{ section.settings.button_background_color }};
+    --shopx-product-carousel-button-text: {{ section.settings.button_text_color }};
+    --shopx-product-carousel-tab-active-background: {{ section.settings.tab_active_background_color }};
+    --shopx-product-carousel-line-color: {{ section.settings.line_color }};
+    --shopx-product-carousel-padding-top: {{ section.settings.padding_top }}px;
+    --shopx-product-carousel-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  {%- if section.settings.heading != blank -%}
+    <h2 class="shopx-product-carousel__heading">{{ section.settings.heading }}</h2>
+  {%- endif -%}
+
+  {%- if show_tabs -%}
+    <div
+      class="shopx-product-carousel__tabs"
+      role="tablist"
+      aria-label="{{ section.settings.heading | escape }}"
+    >
+      {%- for block in tab_blocks -%}
+        <button
+          id="ShopxCarouselTab-{{ block.id }}"
+          class="shopx-product-carousel__tab"
+          type="button"
+          role="tab"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+          aria-controls="ShopxCarouselPanel-{{ block.id }}"
+          {% unless forloop.first %}tabindex="-1"{% endunless %}
+          data-shopx-product-carousel-tab
+          {{ block.shopify_attributes }}
+        >
+          {{- block.settings.label -}}
+        </button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  <div class="shopx-product-carousel__viewport">
+    <button
+      class="shopx-product-carousel__arrow shopx-product-carousel__arrow--previous"
+      type="button"
+      aria-label="{{ section.settings.previous_label | escape }}"
+      data-shopx-product-carousel-previous
+    >
+      {% render 'shopx-icon-arrow', direction: 'left' %}
+    </button>
+
+    {%- for block in tab_blocks -%}
+      {%- assign tab_collection = block.settings.collection | default: collections['all'] -%}
+      <div
+        id="ShopxCarouselPanel-{{ block.id }}"
+        class="shopx-product-carousel__panel"
+        {% if show_tabs %}
+          role="tabpanel"
+          aria-labelledby="ShopxCarouselTab-{{ block.id }}"
+        {% endif %}
+        data-shopx-product-carousel-panel
+        {% unless forloop.first %}hidden{% endunless %}
+      >
+        <ul
+          class="shopx-product-carousel__list"
+          role="list"
+          tabindex="0"
+          aria-label="{{ block.settings.label | default: section.settings.heading | escape }}"
+          data-shopx-product-carousel-list
+        >
+          {%- for product in tab_collection.products limit: section.settings.products_to_show -%}
+            <li class="shopx-product-carousel__item">
+              {% render 'shopx-product-card',
+                product: product,
+                sale_badge_label: section.settings.sale_badge_label,
+                new_badge_tag: section.settings.new_badge_tag,
+                new_badge_label: section.settings.new_badge_label,
+                quick_add_label: section.settings.quick_add_label,
+                is_first: forloop.first
+              %}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endfor -%}
+
+    <button
+      class="shopx-product-carousel__arrow shopx-product-carousel__arrow--next"
+      type="button"
+      aria-label="{{ section.settings.next_label | escape }}"
+      data-shopx-product-carousel-next
+    >
+      {% render 'shopx-icon-arrow', direction: 'right' %}
+    </button>
+  </div>
+
+  <div class="shopx-product-carousel__progress" aria-hidden="true">
+    <span class="shopx-product-carousel__progress-bar" data-shopx-product-carousel-progress></span>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "ShopX product carousel",
+  "tag": "section",
+  "class": "shopx-product-carousel-section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products per tab",
+      "min": 2,
+      "max": 16,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "text",
+      "id": "sale_badge_label",
+      "label": "Sale badge label",
+      "info": "[percent] is replaced with the real discount.",
+      "default": "[percent]% OFF"
+    },
+    {
+      "type": "text",
+      "id": "new_badge_tag",
+      "label": "New badge product tag",
+      "info": "Products with this tag show the new badge.",
+      "default": "new"
+    },
+    {
+      "type": "text",
+      "id": "new_badge_label",
+      "label": "New badge label",
+      "default": "NEW"
+    },
+    {
+      "type": "text",
+      "id": "quick_add_label",
+      "label": "Quick add label",
+      "default": "Quick Add"
+    },
+    {
+      "type": "text",
+      "id": "previous_label",
+      "label": "Previous button label",
+      "default": "Previous products"
+    },
+    {
+      "type": "text",
+      "id": "next_label",
+      "label": "Next button label",
+      "default": "Next products"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading colour",
+      "default": "#202020"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#202020"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Muted text colour",
+      "default": "#4a4a4a"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button background",
+      "default": "#202020"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_background_color",
+      "label": "Active tab background",
+      "default": "#f2f3f4"
+    },
+    {
+      "type": "color",
+      "id": "line_color",
+      "label": "Line colour",
+      "default": "#e8e8e8"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection",
+          "info": "Empty shows all products."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ShopX product carousel",
+      "blocks": [
+        {
+          "type": "tab"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
