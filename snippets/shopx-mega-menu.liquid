@@ -1,0 +1,229 @@
+{%- doc -%}
+  ShopX mega menu. Each child link of the top-level item is a column, and its own child links
+  are the rows. Images come from the linked collection or product.
+
+  @param {object} parent_link - Top-level menu link.
+  @param {number} [thumbnail_column] - Column number that shows round images. 0 for none.
+  @param {number} [card_column] - Column number that shows image cards. 0 for none.
+  @param {string} [card_badge] - Badge text on the first card.
+  @param {boolean} [is_configured] - Use the columns set up in the header menu settings.
+  @param {object} [block_settings] - Header menu block settings, needed when is_configured.
+{%- enddoc -%}
+{%- if is_configured -%}
+  <div class="shopx-mega-menu shopx-mega-menu--configured">
+    {%- for column_number in (1..3) -%}
+      {%- liquid
+        assign heading_key = 'shopx_column_' | append: column_number | append: '_heading'
+        assign menu_key = 'shopx_column_' | append: column_number | append: '_menu'
+        assign column_heading = block_settings[heading_key]
+        assign column_menu = block_settings[menu_key]
+        assign column_style = 'list'
+        if column_number == 2
+          assign column_style = 'thumbnails'
+        endif
+      -%}
+      {%- if column_heading != blank or column_menu.links.size > 0 -%}
+        <div class="shopx-mega-menu__column shopx-mega-menu__column--{{ column_style }}">
+          {%- if column_heading != blank -%}
+            <p class="shopx-mega-menu__heading">{{ column_heading }}</p>
+          {%- endif -%}
+          {%- if column_menu.links.size > 0 -%}
+            <ul class="shopx-mega-menu__list" role="list">
+              {%- for item_link in column_menu.links -%}
+                <li class="shopx-mega-menu__item">
+                  {%- if column_style == 'thumbnails' -%}
+                    {%- liquid
+                      assign image_key = 'shopx_column_2_image_' | append: forloop.index
+                      assign item_image = block_settings[image_key] | default: item_link.object.featured_image
+                    -%}
+                    <a class="shopx-mega-menu__thumbnail-link" href="{{ item_link.url }}">
+                      {%- if item_image != blank -%}
+                        {{
+                          item_image
+                          | image_url: width: 128
+                          | image_tag:
+                            class: 'shopx-mega-menu__thumbnail',
+                            width: 42,
+                            height: 42,
+                            loading: 'lazy',
+                            alt: ''
+                        }}
+                      {%- endif -%}
+                      <span>{{ item_link.title }}</span>
+                    </a>
+                  {%- else -%}
+                    <a
+                      class="shopx-mega-menu__link{% if item_link.active %} shopx-mega-menu__link--active{% endif %}"
+                      href="{{ item_link.url }}"
+                      {% if item_link.active %}aria-current="page"{% endif %}
+                    >
+                      {{- item_link.title -}}
+                    </a>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- liquid
+      assign has_cards = false
+      if block_settings.shopx_card_1_title != blank or block_settings.shopx_card_1_image != blank
+        assign has_cards = true
+      elsif block_settings.shopx_card_2_title != blank or block_settings.shopx_card_2_image != blank
+        assign has_cards = true
+      endif
+    -%}
+    {%- if has_cards -%}
+      <div class="shopx-mega-menu__column shopx-mega-menu__column--cards">
+        {%- if block_settings.shopx_column_4_heading != blank -%}
+          <p class="shopx-mega-menu__heading">{{ block_settings.shopx_column_4_heading }}</p>
+        {%- endif -%}
+        <ul class="shopx-mega-menu__list" role="list">
+          {%- for card_number in (1..2) -%}
+            {%- liquid
+              assign image_key = 'shopx_card_' | append: card_number | append: '_image'
+              assign title_key = 'shopx_card_' | append: card_number | append: '_title'
+              assign link_key = 'shopx_card_' | append: card_number | append: '_link'
+              assign card_image = block_settings[image_key]
+              assign card_title = block_settings[title_key]
+              assign card_link = block_settings[link_key] | default: routes.all_products_collection_url
+            -%}
+            {%- if card_title != blank or card_image != blank -%}
+              <li class="shopx-mega-menu__item">
+                <a class="shopx-mega-menu__card" href="{{ card_link }}">
+                  {%- if card_image != blank -%}
+                    {{
+                      card_image
+                      | image_url: width: 870
+                      | image_tag:
+                        class: 'shopx-mega-menu__card-image',
+                        widths: '290, 580, 870',
+                        sizes: '290px',
+                        loading: 'lazy',
+                        alt: ''
+                    }}
+                  {%- endif -%}
+                  {%- if card_number == 1 and card_badge != blank -%}
+                    <span class="shopx-mega-menu__badge">{{ card_badge }}</span>
+                  {%- endif -%}
+                  <span class="shopx-mega-menu__card-title">{{ card_title }}</span>
+                  <span class="shopx-mega-menu__card-arrow" aria-hidden="true">
+                    {%- render 'shopx-icon-arrow' -%}
+                  </span>
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+  </div>
+{%- else -%}
+{%- liquid
+  assign has_third_level = false
+  for column_link in parent_link.links
+    if column_link.links.size > 0
+      assign has_third_level = true
+      break
+    endif
+  endfor
+-%}
+
+{%- unless has_third_level -%}
+  {%- comment -%} Two-level menus show their links as one simple list. {%- endcomment -%}
+  <ul class="shopx-mega-menu shopx-mega-menu--simple" role="list">
+    {%- for column_link in parent_link.links -%}
+      <li class="shopx-mega-menu__item">
+        <a
+          class="shopx-mega-menu__link{% if column_link.active %} shopx-mega-menu__link--active{% endif %}"
+          href="{{ column_link.url }}"
+          {% if column_link.active %}aria-current="page"{% endif %}
+        >
+          {{- column_link.title -}}
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+{%- else -%}
+<div class="shopx-mega-menu">
+  {%- for column_link in parent_link.links -%}
+    {%- liquid
+      assign column_style = 'list'
+      if forloop.index == thumbnail_column
+        assign column_style = 'thumbnails'
+      elsif forloop.index == card_column
+        assign column_style = 'cards'
+      endif
+    -%}
+    <div class="shopx-mega-menu__column shopx-mega-menu__column--{{ column_style }}">
+      {%- if column_link.url != blank and column_link.url != '#' -%}
+        <a class="shopx-mega-menu__heading" href="{{ column_link.url }}">{{ column_link.title }}</a>
+      {%- else -%}
+        <p class="shopx-mega-menu__heading">{{ column_link.title }}</p>
+      {%- endif -%}
+
+      {%- if column_link.links.size > 0 -%}
+        <ul class="shopx-mega-menu__list" role="list">
+          {%- for item_link in column_link.links -%}
+            {%- assign item_image = item_link.object.featured_image -%}
+            <li class="shopx-mega-menu__item">
+              {%- case column_style -%}
+                {%- when 'thumbnails' -%}
+                  <a class="shopx-mega-menu__thumbnail-link" href="{{ item_link.url }}">
+                    {%- if item_image != blank -%}
+                      {{
+                        item_image
+                        | image_url: width: 96
+                        | image_tag:
+                          class: 'shopx-mega-menu__thumbnail',
+                          width: 32,
+                          height: 32,
+                          loading: 'lazy',
+                          alt: ''
+                      }}
+                    {%- endif -%}
+                    <span>{{ item_link.title }}</span>
+                  </a>
+                {%- when 'cards' -%}
+                  <a class="shopx-mega-menu__card" href="{{ item_link.url }}">
+                    {%- if item_image != blank -%}
+                      {{
+                        item_image
+                        | image_url: width: 640
+                        | image_tag:
+                          class: 'shopx-mega-menu__card-image',
+                          widths: '214, 428, 640',
+                          sizes: '214px',
+                          loading: 'lazy',
+                          alt: ''
+                      }}
+                    {%- endif -%}
+                    {%- if forloop.first and card_badge != blank -%}
+                      <span class="shopx-mega-menu__badge">{{ card_badge }}</span>
+                    {%- endif -%}
+                    <span class="shopx-mega-menu__card-title">{{ item_link.title }}</span>
+                    <span class="shopx-mega-menu__card-arrow" aria-hidden="true">
+                      {%- render 'shopx-icon-arrow' -%}
+                    </span>
+                  </a>
+                {%- else -%}
+                  <a
+                    class="shopx-mega-menu__link{% if item_link.active %} shopx-mega-menu__link--active{% endif %}"
+                    href="{{ item_link.url }}"
+                    {% if item_link.active %}aria-current="page"{% endif %}
+                  >
+                    {{- item_link.title -}}
+                  </a>
+              {%- endcase -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  {%- endfor -%}
+</div>
+{%- endunless -%}
+{%- endif -%}

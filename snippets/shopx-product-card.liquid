@@ -1,0 +1,114 @@
+{%- doc -%}
+  Product card for ShopX sections. Sizes add the variant to the cart with a native form.
+
+  @param {product} product - Product to show.
+  @param {string} sale_badge_label - Badge text, [percent] is replaced.
+  @param {string} [new_badge_tag] - Product tag that shows the new badge.
+  @param {string} [new_badge_label] - New badge text.
+  @param {string} quick_add_label - Quick add button text.
+  @param {string} [price_from_label] - Shown before the price when variant prices differ.
+{%- enddoc -%}
+{%- liquid
+  assign size_option = product.options_by_name['Size']
+  assign color_option = product.options_by_name['Color']
+-%}
+
+<div class="shopx-product-card">
+  <div class="shopx-product-card__media">
+    <a
+      class="shopx-product-card__image-link"
+      href="{{ product.url }}"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      {%- if product.featured_media != blank -%}
+        {{
+          product.featured_media
+          | image_url: width: 900
+          | image_tag:
+            class: 'shopx-product-card__image',
+            widths: '285, 450, 570, 900',
+            sizes: '(min-width: 750px) 285px, 70vw',
+            loading: 'lazy',
+            alt: ''
+        }}
+      {%- endif -%}
+    </a>
+
+    {%- if product.compare_at_price > product.price -%}
+      {%- liquid
+        assign discount_amount = product.compare_at_price | minus: product.price
+        assign discount_percent = discount_amount | times: 100 | divided_by: product.compare_at_price
+      -%}
+      <span class="shopx-product-card__badge">
+        {{- sale_badge_label | replace: '[percent]', discount_percent -}}
+      </span>
+    {%- elsif new_badge_tag != blank and product.tags contains new_badge_tag -%}
+      <span class="shopx-product-card__badge">{{ new_badge_label }}</span>
+    {%- endif -%}
+
+    {%- if product.available -%}
+      <div class="shopx-product-card__quick-add">
+        {%- form 'product', product, class: 'shopx-product-card__form' -%}
+          {%- comment -%}
+            With sizes, the shopper must pick one, so the label is not a button.
+          {%- endcomment -%}
+          {%- if size_option != blank -%}
+            <p class="shopx-product-card__quick-add-button">{{ quick_add_label }}</p>
+          {%- else -%}
+            <button
+              class="shopx-product-card__quick-add-button"
+              type="submit"
+              name="id"
+              value="{{ product.selected_or_first_available_variant.id }}"
+            >
+              {{- quick_add_label -}}
+            </button>
+          {%- endif -%}
+
+          {%- if size_option != blank -%}
+            {%- assign size_key = 'option' | append: size_option.position -%}
+            <div class="shopx-product-card__sizes">
+              {%- for size_value in size_option.values -%}
+                {%- assign size_variant = product.variants
+                  | where: size_key, size_value
+                  | where: 'available', true
+                  | first
+                -%}
+                {%- if size_variant -%}
+                  <button
+                    class="shopx-product-card__size"
+                    type="submit"
+                    name="id"
+                    value="{{ size_variant.id }}"
+                  >
+                    {{- size_value -}}
+                  </button>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="shopx-product-card__info">
+    <a class="shopx-product-card__title" href="{{ product.url }}">{{ product.title }}</a>
+    {%- if product.type != blank -%}
+      <p class="shopx-product-card__meta">{{ product.type }}</p>
+    {%- endif -%}
+    {%- if color_option != blank -%}
+      <p class="shopx-product-card__meta">{{ color_option.values | join: ' / ' }}</p>
+    {%- endif -%}
+    <p class="shopx-product-card__price">
+      {%- if product.price_varies and price_from_label != blank -%}
+        <span class="shopx-product-card__from">{{ price_from_label }}</span>
+      {%- endif -%}
+      {{ product.price | money }}
+      {%- if product.compare_at_price > product.price -%}
+        <s class="shopx-product-card__compare-price">{{ product.compare_at_price | money }}</s>
+      {%- endif -%}
+    </p>
+  </div>
+</div>

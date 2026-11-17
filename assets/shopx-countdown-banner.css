@@ -1,0 +1,100 @@
+.shopx-countdown-banner {
+  padding-block: var(--shopx-countdown-banner-padding-top) var(--shopx-countdown-banner-padding-bottom);
+  background-color: var(--shopx-countdown-banner-background);
+  color: var(--shopx-countdown-banner-text-color);
+}
+
+.shopx-countdown-banner__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 64.375rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  text-align: center;
+}
+
+.shopx-countdown-banner__heading {
+  margin: 0;
+  font-family: var(--font-heading--family);
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.shopx-countdown-banner__subheading {
+  margin: 0.75rem 0 0;
+  font-family: var(--font-body--family);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.shopx-countdown-banner__countdown {
+  display: flex;
+  align-items: flex-start;
+}
+
+.shopx-countdown-banner__countdown[hidden] {
+  display: none;
+}
+
+.shopx-countdown-banner__unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  min-width: 4rem;
+}
+
+.shopx-countdown-banner__number {
+  font-family: var(--font-heading--family);
+  font-size: 1.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.shopx-countdown-banner__unit-label {
+  font-family: var(--font-body--family);
+  font-size: 0.75rem;
+}
+
+.shopx-countdown-banner__separator {
+  padding-inline: 0.5rem;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+@media screen and (min-width: 750px) {
+  .shopx-countdown-banner__inner {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+
+  .shopx-countdown-banner__heading {
+    font-size: 2.5rem;
+  }
+
+  .shopx-countdown-banner__subheading {
+    font-size: 1.25rem;
+  }
+
+  .shopx-countdown-banner__unit {
+    min-width: 5.25rem;
+  }
+
+  .shopx-countdown-banner__number {
+    font-size: 2.5rem;
+  }
+
+  .shopx-countdown-banner__unit-label {
+    font-size: 0.875rem;
+  }
+
+  .shopx-countdown-banner__separator {
+    padding-inline: 0.75rem;
+    font-size: 2rem;
+  }
+}

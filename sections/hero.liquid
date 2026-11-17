@@ -1,3 +1,8 @@
+{%- comment -%} shopx: split layout option (text left, media right). {%- endcomment -%}
+{%- if section.settings.layout_style == 'split' -%}
+  {{ 'shopx-hero.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
 
 
 {% liquid
@@ -461,12 +466,18 @@
 
 <div
   id="Hero-{{ section.id }}"
-  class="hero{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}{% if section.blocks.size == 0 and section.settings.section_height == 'auto' %} hero--no-blocks-auto-height{% endif %}{% if section.settings.stack_media_on_mobile %} hero--stack-mobile{% endif %}"
+  class="hero{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}{% if section.blocks.size == 0 and section.settings.section_height == 'auto' %} hero--no-blocks-auto-height{% endif %}{% if section.settings.stack_media_on_mobile %} hero--stack-mobile{% endif %}{% if section.settings.layout_style == 'split' %} shopx-hero--split{% endif %}"
   style="
     --hero-border-style: {{ section.settings.border }};
     --hero-border-width: {{ section.settings.border_width }}px;
     --hero-border-opacity: {{ section.settings.border_opacity }}%;
     --blur-opacity: {{ section.settings.reflection_opacity | divided_by: 100.0 }};
+    {%- comment -%} shopx: mobile colours for the split layout. {%- endcomment -%}
+    {%- if section.settings.layout_style == 'split' -%}
+      --shopx-hero-mobile-text: {{ section.settings.mobile_text_color }};
+      --shopx-hero-mobile-button-background: {{ section.settings.mobile_button_background_color }};
+      --shopx-hero-mobile-button-text: {{ section.settings.mobile_button_text_color }};
+    {%- endif -%}
     {% if section.settings.section_height == 'custom' %}
       --hero-min-height: {{ section.settings.section_height_custom }}svh;
     {% elsif section.settings.section_height == "full-screen" %}
@@ -971,6 +982,45 @@
     {
       "type": "header",
       "content": "t:content.layout"
+    },
+    {
+      "type": "select",
+      "id": "layout_style",
+      "label": "Layout style",
+      "options": [
+        {
+          "value": "overlay",
+          "label": "Text over media"
+        },
+        {
+          "value": "split",
+          "label": "Text beside media"
+        }
+      ],
+      "default": "overlay",
+      "info": "Text beside media puts the text on the left and the first media on the right. On mobile the text sits over the media."
+    },
+    {
+      "type": "color",
+      "id": "mobile_text_color",
+      "label": "Mobile text colour",
+      "info": "Text beside media only. On mobile the text sits over the image.",
+      "default": "#ffffff",
+      "visible_if": "{{ section.settings.layout_style == 'split' }}"
+    },
+    {
+      "type": "color",
+      "id": "mobile_button_background_color",
+      "label": "Mobile button background",
+      "default": "#ffffff",
+      "visible_if": "{{ section.settings.layout_style == 'split' }}"
+    },
+    {
+      "type": "color",
+      "id": "mobile_button_text_color",
+      "label": "Mobile button text",
+      "default": "#392915",
+      "visible_if": "{{ section.settings.layout_style == 'split' }}"
     },
     {
       "type": "select",

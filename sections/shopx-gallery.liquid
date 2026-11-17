@@ -1,0 +1,163 @@
+{{ 'shopx-gallery.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="shopx-gallery"
+  style="
+    --shopx-gallery-background: {{ section.settings.background_color }};
+    --shopx-gallery-text-color: {{ section.settings.text_color }};
+    --shopx-gallery-padding-top: {{ section.settings.padding_top }}px;
+    --shopx-gallery-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="shopx-gallery__header">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="shopx-gallery__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if section.settings.subheading != blank or section.settings.handle != blank -%}
+      <p class="shopx-gallery__subheading">
+        {{ section.settings.subheading }}
+        {%- if section.settings.handle != blank -%}
+          {%- if section.settings.handle_link != blank -%}
+            <a class="shopx-gallery__handle" href="{{ section.settings.handle_link }}">
+              {{- section.settings.handle -}}
+            </a>
+          {%- else -%}
+            <span class="shopx-gallery__handle">{{ section.settings.handle }}</span>
+          {%- endif -%}
+        {%- endif -%}
+      </p>
+    {%- endif -%}
+  </div>
+
+  <ul class="shopx-gallery__list" role="list">
+    {%- for block in section.blocks -%}
+      {%- if block.settings.image != blank -%}
+        {%- liquid
+          assign image_alt = block.settings.image.alt | default: ''
+          if block.settings.link != blank and image_alt == ''
+            assign image_alt = section.settings.handle | default: section.settings.heading
+          endif
+        -%}
+        <li class="shopx-gallery__item" {{ block.shopify_attributes }}>
+          {%- if block.settings.link != blank -%}
+            <a class="shopx-gallery__link" href="{{ block.settings.link }}">
+          {%- endif -%}
+          {{
+            block.settings.image
+            | image_url: width: 1200
+            | image_tag:
+              class: 'shopx-gallery__image',
+              widths: '200, 376, 600, 800, 1200',
+              sizes: '(min-width: 750px) 25vw, 50vw',
+              loading: 'lazy',
+              alt: image_alt
+          }}
+          {%- if block.settings.link != blank -%}
+            </a>
+          {%- endif -%}
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+</div>
+
+{% schema %}
+{
+  "name": "ShopX gallery",
+  "tag": "section",
+  "class": "shopx-gallery-section",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "text",
+      "id": "handle",
+      "label": "Social handle"
+    },
+    {
+      "type": "url",
+      "id": "handle_link",
+      "label": "Social handle link"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#202020"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Tiles without an image are hidden."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ShopX gallery",
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

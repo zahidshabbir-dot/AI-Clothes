@@ -92,15 +92,36 @@
       endif
     %}
 
+    {%- comment -%} shopx: stylesheet for the column mega menu style. {%- endcomment -%}
+    {%- if block_settings.menu_style == 'shopx_columns' -%}
+      {{ 'shopx-mega-menu.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
+
     {% capture children %}
       {% for link in block_settings.menu.links %}
+        {%- liquid
+          # shopx: the configured mega menu item opens even without child links.
+          assign has_submenu = false
+          if link.links != blank
+            assign has_submenu = true
+          endif
+          assign is_shopx_mega_link = false
+          if block_settings.menu_style == 'shopx_columns' and block_settings.shopx_mega_trigger != blank
+            assign trigger_handle = block_settings.shopx_mega_trigger | handleize
+            assign link_handle = link.title | handleize
+            if trigger_handle == link_handle
+              assign is_shopx_mega_link = true
+              assign has_submenu = true
+            endif
+          endif
+        -%}
         <li
           class="menu-list__list-item"
           on:blur="/deactivate"
           on:pointerenter="/activate"
           on:pointerleave="/deactivate"
         >
-          {%- if link.links != blank -%}
+          {%- if has_submenu -%}
             <span class="menu-list__trigger">
           {%- endif -%}
           <a
@@ -114,7 +135,7 @@
           >
             <span class="menu-list__link-title">{{- link.title -}}</span>
           </a>
-          {%- if link.links != blank -%}
+          {%- if has_submenu -%}
             <button
               type="button"
               class="menu-list__disclosure button-unstyled"
@@ -151,17 +172,29 @@
                     class="mega-menu__grid"
                     data-menu-grid-id="{{ list_id }}"
                   >
-                    {% render 'mega-menu-list',
-                      parent_link: link,
-                      id: list_id,
-                      section: section,
-                      grid_columns_count: 6,
-                      grid_columns_count_tablet: 4,
-                      grid_columns_count_collection_images: 8,
-                      menu_content_type: menu_content_type,
-                      content_aspect_ratio: ratio,
-                      image_border_radius: image_border_radius
-                    %}
+                    {%- comment -%} shopx: column mega menu style. {%- endcomment -%}
+                    {%- if block_settings.menu_style == 'shopx_columns' -%}
+                      {% render 'shopx-mega-menu',
+                        parent_link: link,
+                        is_configured: is_shopx_mega_link,
+                        block_settings: block_settings,
+                        thumbnail_column: block_settings.shopx_thumbnail_column,
+                        card_column: block_settings.shopx_card_column,
+                        card_badge: block_settings.shopx_card_badge
+                      %}
+                    {%- else -%}
+                      {% render 'mega-menu-list',
+                        parent_link: link,
+                        id: list_id,
+                        section: section,
+                        grid_columns_count: 6,
+                        grid_columns_count_tablet: 4,
+                        grid_columns_count_collection_images: 8,
+                        menu_content_type: menu_content_type,
+                        content_aspect_ratio: ratio,
+                        image_border_radius: image_border_radius
+                      %}
+                    {%- endif -%}
                   </div>
                 </div>
               </div>
@@ -1101,9 +1134,170 @@
         {
           "value": "featured_collections",
           "label": "t:options.featured_collections"
+        },
+        {
+          "value": "shopx_columns",
+          "label": "Columns with images"
         }
       ],
       "default": "collection_images"
+    },
+    {
+      "type": "range",
+      "id": "shopx_thumbnail_column",
+      "label": "Column with round images",
+      "info": "0 for none. Images come from the linked collections or products.",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "default": 2,
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}"
+    },
+    {
+      "type": "range",
+      "id": "shopx_card_column",
+      "label": "Column with image cards",
+      "info": "0 for none.",
+      "min": 0,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}"
+    },
+    {
+      "type": "text",
+      "id": "shopx_card_badge",
+      "label": "Badge on card 1",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}"
+    },
+    {
+      "type": "header",
+      "content": "ShopX mega menu",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}"
+    },
+    {
+      "type": "text",
+      "id": "shopx_mega_trigger",
+      "label": "Menu item that opens it",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}",
+      "default": "Shop",
+      "info": "Type the menu item's name exactly, for example Shop."
+    },
+    {
+      "type": "text",
+      "id": "shopx_column_1_heading",
+      "label": "Column 1 heading",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}",
+      "default": "Products"
+    },
+    {
+      "type": "link_list",
+      "id": "shopx_column_1_menu",
+      "label": "Column 1 menu",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}"
+    },
+    {
+      "type": "text",
+      "id": "shopx_column_2_heading",
+      "label": "Column 2 heading",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}",
+      "default": "Trending"
+    },
+    {
+      "type": "link_list",
+      "id": "shopx_column_2_menu",
+      "label": "Column 2 menu",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}",
+      "info": "Shows round images. Upload them below, in the same order as the menu links."
+    },
+    {
+      "type": "image_picker",
+      "id": "shopx_column_2_image_1",
+      "label": "Column 2 image 1",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}",
+      "info": "Empty uses the linked collection or product image."
+    },
+    {
+      "type": "image_picker",
+      "id": "shopx_column_2_image_2",
+      "label": "Column 2 image 2",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "shopx_column_2_image_3",
+      "label": "Column 2 image 3",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "shopx_column_2_image_4",
+      "label": "Column 2 image 4",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "shopx_column_2_image_5",
+      "label": "Column 2 image 5",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}"
+    },
+    {
+      "type": "text",
+      "id": "shopx_column_3_heading",
+      "label": "Column 3 heading",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}",
+      "default": "Collections"
+    },
+    {
+      "type": "link_list",
+      "id": "shopx_column_3_menu",
+      "label": "Column 3 menu",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}"
+    },
+    {
+      "type": "text",
+      "id": "shopx_column_4_heading",
+      "label": "Column 4 heading",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}",
+      "default": "Featured"
+    },
+    {
+      "type": "image_picker",
+      "id": "shopx_card_1_image",
+      "label": "Card 1 image",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}"
+    },
+    {
+      "type": "text",
+      "id": "shopx_card_1_title",
+      "label": "Card 1 title",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}",
+      "default": "New Releases"
+    },
+    {
+      "type": "url",
+      "id": "shopx_card_1_link",
+      "label": "Card 1 link",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "shopx_card_2_image",
+      "label": "Card 2 image",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}"
+    },
+    {
+      "type": "text",
+      "id": "shopx_card_2_title",
+      "label": "Card 2 title",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "url",
+      "id": "shopx_card_2_link",
+      "label": "Card 2 link",
+      "visible_if": "{{ block.settings.menu_style == 'shopx_columns' }}"
     },
     {
       "type": "select",

@@ -1,0 +1,40 @@
+{%- comment -%}
+  Renders the announcement text with an optional countdown and button.
+
+  Accepts:
+  - block: the _announcement block.
+{%- endcomment -%}
+{%- assign block_settings = block.settings -%}
+{%- assign button_link = block_settings.button_link | default: routes.all_products_collection_url -%}
+
+{{ 'shopx-announcement.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="shopx-announcement"
+  style="
+    --shopx-announcement-button-background: {{ block_settings.button_background_color }};
+    --shopx-announcement-button-text: {{ block_settings.button_text_color }};
+  "
+>
+  <p class="announcement-bar__text shopx-announcement__text">
+    {{ block_settings.text }}
+  </p>
+
+  {% render 'shopx-countdown',
+    end: block_settings.countdown_end,
+    class_name: 'shopx-announcement',
+    days_label: block_settings.days_label,
+    hours_label: block_settings.hours_label,
+    minutes_label: block_settings.minutes_label,
+    seconds_label: block_settings.seconds_label
+  %}
+
+  {%- if block_settings.button_label != blank -%}
+    <a
+      class="shopx-announcement__button"
+      href="{{ button_link }}"
+    >
+      {{- block_settings.button_label -}}
+    </a>
+  {%- endif -%}
+</div>

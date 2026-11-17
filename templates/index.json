@@ -6,27 +6,77 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "hero_jVaWmY": {
       "type": "hero",
       "blocks": {
         "text_YLPk4p": {
           "type": "text",
-          "name": "t:names.heading",
           "settings": {
-            "text": "<p>Browse our latest products</p>",
-            "text_color": "{{ settings.color_palette.background }}",
+            "text": "<p>Style Revamp</p>",
             "width": "fit-content",
-            "max_width": "normal",
+            "max_width": "none",
             "alignment": "left",
-            "type_preset": "h2",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
+            "type_preset": "custom",
+            "font": "var(--font-heading--family)",
+            "font_size": "2.5rem",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
+            "text_color": "#202020",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_shopx_offer": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>50% OFF</strong></p>",
+            "width": "fit-content",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-heading--family)",
+            "font_size": "5.5rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "#202020",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_shopx_body": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Unleash your style and save big with 50% off on clothing.</p>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "1.5rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "#4a4a4a",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -41,13 +91,14 @@
           "type": "button",
           "name": "t:names.button",
           "settings": {
-            "label": "Shop all",
+            "label": "Shop Now",
             "link": "shopify://collections/all",
             "open_in_new_tab": false,
             "style_class": "button-custom",
-            "custom_button_background": "rgba(0,0,0,0)",
-            "custom_button_text": "{{ settings.color_palette.background }}",
-            "custom_button_border": "{{ settings.color_palette.background }}",
+            "custom_button_background": "#392915",
+            "custom_button_text": "#ffffff",
+            "custom_button_border": "#392915",
+            "link_text_color": "",
             "width": "fit-content",
             "custom_width": 100,
             "width_mobile": "fit-content",
@@ -58,228 +109,447 @@
       },
       "block_order": [
         "text_YLPk4p",
+        "text_shopx_offer",
+        "text_shopx_body",
         "button_H9gpTf"
       ],
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
+        "image_1": "shopify://shop_images/Component_1000001356.png",
         "media_type_2": "image",
         "stack_media_on_mobile": false,
         "custom_mobile_media": false,
         "media_type_1_mobile": "image",
         "media_type_2_mobile": "image",
+        "link": "",
         "open_in_new_tab": false,
+        "layout_style": "split",
+        "mobile_text_color": "#ffffff",
+        "mobile_button_background_color": "#ffffff",
+        "mobile_button_text_color": "#392915",
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "space-between",
         "vertical_alignment": "flex-end",
         "align_baseline": true,
-        "horizontal_alignment_flex_direction_column": "center",
-        "vertical_alignment_flex_direction_column": "flex-end",
-        "gap": 24,
-        "section_width": "page-width",
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "full-width",
         "section_height": "medium",
         "section_height_custom": 50,
-        "background_color": "rgba(0,0,0,0)",
-        "toggle_overlay": true,
+        "background_color": "#fff2e4",
+        "toggle_overlay": false,
         "overlay_color": "#12121266",
         "overlay_style": "solid",
         "gradient_direction": "to bottom",
         "blurred_reflection": false,
         "reflection_opacity": 75,
-        "padding-block-start": 100,
-        "padding-block-end": 72
+        "padding-block-start": 0,
+        "padding-block-end": 0
       }
     },
-    "product_list_fa6P9H": {
-      "type": "product-list",
+    "shopx_features": {
+      "type": "shopx-features",
       "blocks": {
-        "static-header": {
-          "type": "_product-list-content",
-          "name": "t:names.header",
-          "static": true,
+        "feature_1": {
+          "type": "feature",
           "settings": {
-            "content_direction": "row",
-            "vertical_on_mobile": false,
-            "horizontal_alignment": "space-between",
-            "vertical_alignment": "flex-end",
-            "align_baseline": true,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_list_text_YFtzcL": {
-              "type": "_product-list-text",
-              "name": "t:names.collection_title",
-              "settings": {
-                "text": "<h3>{{ closest.collection.title }}</h3>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h4",
-                "font": "var(--font-body--family)",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_list_button_MWeP9V": {
-              "type": "_product-list-button",
-              "name": "t:names.product_list_button",
-              "settings": {
-                "label": "View all",
-                "open_in_new_tab": false,
-                "style_class": "link",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_list_text_YFtzcL",
-            "product_list_button_MWeP9V"
-          ]
+            "icon": "shopify://shop_images/truck.svg",
+            "title": "Free Shipping",
+            "text": "on AU orders $80+"
+          }
         },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "t:names.product_card",
-          "static": true,
+        "feature_2": {
+          "type": "feature",
           "settings": {
-            "product_card_gap": 4,
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_card_gallery_677WP3": {
-              "type": "_product-card-gallery",
-              "name": "t:names.product_card_media",
-              "settings": {
-                "image_ratio": "adapt",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "product_title_YXxMTj": {
-              "type": "product-title",
-              "name": "t:names.product_title",
-              "settings": {
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 4,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "price_JQzVV4": {
-              "type": "price",
-              "name": "t:names.product_price",
-              "settings": {
-                "show_sale_price_first": true,
-                "show_installments": false,
-                "show_tax_info": false,
-                "type_preset": "h6",
-                "width": "100%",
-                "alignment": "left",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_card_gallery_677WP3",
-            "product_title_YXxMTj",
-            "price_JQzVV4"
-          ]
+            "icon": "shopify://shop_images/reset.svg",
+            "title": "Easy Returns",
+            "text": "for your perfect fit"
+          }
+        },
+        "feature_3": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/heart.svg",
+            "title": "Loved By Thousands",
+            "text": "who come back for more"
+          }
+        },
+        "feature_4": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/padlock.svg",
+            "title": "Secure Payments",
+            "text": "AfterPay available"
+          }
         }
       },
-      "name": "t:names.product_list",
+      "block_order": [
+        "feature_1",
+        "feature_2",
+        "feature_3",
+        "feature_4"
+      ],
       "settings": {
-        "collection": "all",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 8,
-        "columns": 4,
-        "mobile_columns": "2",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 8,
-        "rows_gap": 24,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
-        "gap": 28,
-        "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "background_color": "#ffffff",
+        "title_color": "#202020",
+        "text_color": "#4a4a4a",
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
+    },
+    "shopx_category_tiles": {
+      "type": "shopx-category-tiles",
+      "blocks": {
+        "tile_1": {
+          "type": "tile",
+          "settings": {
+            "collection": "daily-essentials",
+            "image": "shopify://shop_images/Frame_31.png",
+            "title": "Shop",
+            "link": ""
+          }
+        },
+        "tile_2": {
+          "type": "tile",
+          "settings": {
+            "collection": "java-coffee",
+            "image": "shopify://shop_images/Frame_32.png",
+            "title": "Accessories",
+            "link": ""
+          }
+        },
+        "tile_3": {
+          "type": "tile",
+          "settings": {
+            "collection": "black",
+            "image": "shopify://shop_images/Frame_30.png",
+            "title": "Virtual Try-on",
+            "link": ""
+          }
+        },
+        "tile_4": {
+          "type": "tile",
+          "settings": {
+            "collection": "hard",
+            "image": "shopify://shop_images/Component_1000001371.png",
+            "title": "Community",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "tile_1",
+        "tile_2",
+        "tile_3",
+        "tile_4"
+      ],
+      "settings": {
+        "background_color": "#ffffff",
+        "title_color": "#202020",
+        "padding_top": 48,
+        "padding_bottom": 64
+      }
+    },
+    "shopx_product_carousel": {
+      "type": "shopx-product-carousel",
+      "blocks": {
+        "tab_all": {
+          "type": "tab",
+          "settings": {
+            "label": "ALL",
+            "collection": ""
+          }
+        },
+        "tab_womens": {
+          "type": "tab",
+          "settings": {
+            "label": "WOMEN'S",
+            "collection": ""
+          }
+        },
+        "tab_mens": {
+          "type": "tab",
+          "settings": {
+            "label": "MENS",
+            "collection": ""
+          }
+        },
+        "tab_accessories": {
+          "type": "tab",
+          "settings": {
+            "label": "ACCESSORIES",
+            "collection": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_all",
+        "tab_womens",
+        "tab_mens",
+        "tab_accessories"
+      ],
+      "settings": {
+        "heading": "Fashion Sensations",
+        "products_to_show": 8,
+        "sale_badge_label": "[percent]% OFF",
+        "new_badge_tag": "new",
+        "new_badge_label": "NEW",
+        "quick_add_label": "Quick Add",
+        "price_from_label": "From",
+        "previous_label": "Previous products",
+        "next_label": "Next products",
+        "background_color": "#ffffff",
+        "heading_color": "#202020",
+        "text_color": "#202020",
+        "muted_text_color": "#4a4a4a",
+        "button_background_color": "#202020",
+        "button_text_color": "#ffffff",
+        "tab_active_background_color": "#f2f3f4",
+        "line_color": "#e8e8e8",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "shopx_countdown_banner": {
+      "type": "shopx-countdown-banner",
+      "settings": {
+        "heading": "Up to 50% Off",
+        "subheading": "Hurry up! Offers end in",
+        "countdown_end": "2026-12-31T23:59:00+05:00",
+        "days_label": "Days",
+        "hours_label": "Hours",
+        "minutes_label": "Minutes",
+        "seconds_label": "Seconds",
+        "background_color": "#fcf2e4",
+        "text_color": "#202020",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "shopx_promo_banner": {
+      "type": "shopx-promo-banner",
+      "settings": {
+        "image": "shopify://shop_images/Frame_44.png",
+        "heading": "Customize Your Outfit",
+        "text": "Customize your outfit and express your unique style by adding a personal touch.",
+        "button_label": "Customize Outfit",
+        "button_link": "",
+        "background_color": "#f7f4f2",
+        "heading_color": "#202020",
+        "text_color": "#4a4a4a",
+        "button_background_color": "#392915",
+        "button_text_color": "#ffffff",
+        "padding_top": 124,
+        "padding_bottom": 124
+      }
+    },
+    "shopx_comparison": {
+      "type": "shopx-comparison",
+      "blocks": {
+        "row_1": {
+          "type": "row",
+          "settings": {
+            "feature": "Virtual Try-on",
+            "our_value": "Yes",
+            "other_value": "—"
+          }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "feature": "Customize your outfit",
+            "our_value": "Yes",
+            "other_value": "—"
+          }
+        },
+        "row_3": {
+          "type": "row",
+          "settings": {
+            "feature": "Free shipping on AU orders $80+",
+            "our_value": "Yes",
+            "other_value": "Varies"
+          }
+        },
+        "row_4": {
+          "type": "row",
+          "settings": {
+            "feature": "Easy returns",
+            "our_value": "Yes",
+            "other_value": "Varies"
+          }
+        },
+        "row_5": {
+          "type": "row",
+          "settings": {
+            "feature": "Digital community & events",
+            "our_value": "Yes",
+            "other_value": "—"
+          }
+        }
+      },
+      "block_order": [
+        "row_1",
+        "row_2",
+        "row_3",
+        "row_4",
+        "row_5"
+      ],
+      "settings": {
+        "heading": "Why Metanoia",
+        "subheading": "See how we compare on what matters most when you shop.",
+        "our_column_label": "Metanoia",
+        "other_column_label": "Others",
+        "background_color": "#f7f4f2",
+        "heading_color": "#202020",
+        "text_color": "#202020",
+        "muted_text_color": "#4a4a4a",
+        "header_background_color": "#392915",
+        "header_text_color": "#ffffff",
+        "row_background_color": "#ffffff",
+        "highlight_color": "#392915",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "shopx_faq": {
+      "type": "shopx-faq",
+      "blocks": {
+        "question_1": {
+          "type": "question",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": ""
+          }
+        },
+        "question_2": {
+          "type": "question",
+          "settings": {
+            "question": "How do I return my order?",
+            "answer": ""
+          }
+        },
+        "question_3": {
+          "type": "question",
+          "settings": {
+            "question": "How do I pay with Tabby?",
+            "answer": ""
+          }
+        },
+        "question_4": {
+          "type": "question",
+          "settings": {
+            "question": "I forgot my password. What do I do?",
+            "answer": ""
+          }
+        },
+        "question_5": {
+          "type": "question",
+          "settings": {
+            "question": "What payment methods do you accept?",
+            "answer": ""
+          }
+        },
+        "question_6": {
+          "type": "question",
+          "settings": {
+            "question": "How are Metanoia fabrics made?",
+            "answer": ""
+          }
+        },
+        "question_7": {
+          "type": "question",
+          "settings": {
+            "question": "How do I care for Metanoia fabrics?",
+            "answer": ""
+          }
+        },
+        "question_8": {
+          "type": "question",
+          "settings": {
+            "question": "How do I use a voucher code?",
+            "answer": ""
+          }
+        }
+      },
+      "block_order": [
+        "question_1",
+        "question_2",
+        "question_3",
+        "question_4",
+        "question_5",
+        "question_6",
+        "question_7",
+        "question_8"
+      ],
+      "settings": {
+        "heading": "Popular Questions",
+        "open_first": true,
+        "background_color": "#ffffff",
+        "heading_color": "#202020",
+        "text_color": "#202020",
+        "line_color": "#e2e2e2",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    },
+    "shopx_gallery": {
+      "type": "shopx-gallery",
+      "blocks": {
+        "image_1": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "image_2": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "image_3": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "image_4": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_1",
+        "image_2",
+        "image_3",
+        "image_4"
+      ],
+      "settings": {
+        "heading": "Stay Fashionable",
+        "subheading": "Follow Us on Instagram!",
+        "handle": "@METANOIA",
+        "handle_link": "",
+        "background_color": "#ffffff",
+        "text_color": "#202020",
+        "padding_top": 80,
+        "padding_bottom": 0
       }
     }
   },
   "order": [
     "hero_jVaWmY",
-    "product_list_fa6P9H"
+    "shopx_features",
+    "shopx_category_tiles",
+    "shopx_product_carousel",
+    "shopx_countdown_banner",
+    "shopx_promo_banner",
+    "shopx_comparison",
+    "shopx_faq",
+    "shopx_gallery"
   ]
 }

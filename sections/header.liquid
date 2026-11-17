@@ -1,3 +1,6 @@
+{%- comment -%} shopx: header overrides for the Figma design. {%- endcomment -%}
+{{ 'shopx-header.css' | asset_url | stylesheet_tag }}
+
 
 
 {% liquid
@@ -204,6 +207,14 @@
   if collapse_header_paddings_class
     assign class = class | append: ' ' | append: collapse_header_paddings_class
   endif
+
+  # shopx: display options from the header settings.
+  unless section.settings.show_search_on_desktop
+    assign class = class | append: ' shopx-header--hide-desktop-search'
+  endunless
+  unless section.settings.show_account_on_mobile
+    assign class = class | append: ' shopx-header--hide-mobile-account'
+  endunless
 
   # Determine transparent background value
   assign top_transparent = false
@@ -1357,12 +1368,54 @@
     },
     {
       "type": "header",
+      "content": "Wishlist and location icons"
+    },
+    {
+      "type": "url",
+      "id": "wishlist_link",
+      "label": "Wishlist link",
+      "info": "Leave empty to hide the wishlist icon."
+    },
+    {
+      "type": "text",
+      "id": "wishlist_label",
+      "label": "Wishlist icon label",
+      "default": "Wishlist"
+    },
+    {
+      "type": "url",
+      "id": "location_link",
+      "label": "Location link",
+      "info": "Leave empty to hide the location icon."
+    },
+    {
+      "type": "text",
+      "id": "location_label",
+      "label": "Location icon label",
+      "default": "Store location"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account_on_mobile",
+      "label": "Show account icon on mobile",
+      "info": "The mobile menu has no account link, so turning this off leaves customers only the footer link.",
+      "default": true
+    },
+    {
+      "type": "header",
       "content": "t:content.search"
     },
     {
       "type": "checkbox",
       "id": "show_search",
       "label": "t:settings.search_icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search_on_desktop",
+      "label": "Show search on desktop",
+      "info": "Turn off to show the search icon on mobile only.",
       "default": true
     },
     {

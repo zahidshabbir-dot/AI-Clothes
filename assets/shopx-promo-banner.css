@@ -1,0 +1,102 @@
+.shopx-promo-banner {
+  padding-block: var(--shopx-promo-banner-padding-top) var(--shopx-promo-banner-padding-bottom);
+}
+
+.shopx-promo-banner__inner {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--shopx-promo-banner-background);
+}
+
+.shopx-promo-banner__media {
+  aspect-ratio: 600 / 650;
+  overflow: hidden;
+}
+
+.shopx-promo-banner__media:not(:has(img)) {
+  display: none;
+}
+
+.shopx-promo-banner__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.shopx-promo-banner__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 2.5rem 1rem;
+}
+
+.shopx-promo-banner__heading {
+  margin: 0;
+  color: var(--shopx-promo-banner-heading-color);
+  font-family: var(--font-heading--family);
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.shopx-promo-banner__text {
+  margin: 0;
+  color: var(--shopx-promo-banner-text-color);
+  font-family: var(--font-body--family);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.shopx-promo-banner__button {
+  margin-block-start: 1rem;
+  padding: 1rem 2rem;
+  border-radius: 0.25rem;
+  background-color: var(--shopx-promo-banner-button-background);
+  color: var(--shopx-promo-banner-button-text);
+  font-size: 1.125rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.shopx-promo-banner__button:focus-visible {
+  outline: 2px solid var(--shopx-promo-banner-button-background);
+  outline-offset: 3px;
+}
+
+@media screen and (min-width: 750px) {
+  .shopx-promo-banner__inner {
+    display: grid;
+    grid-template-columns: 600fr 630fr;
+    align-items: center;
+    max-width: 76.875rem;
+    min-height: 40.625rem;
+    margin-inline: auto;
+  }
+
+  .shopx-promo-banner__media {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+
+  .shopx-promo-banner__content {
+    grid-column: 2;
+    max-width: 26.875rem;
+    padding: 0;
+    margin-inline-start: 6rem;
+  }
+
+  .shopx-promo-banner__heading {
+    font-size: 3.5rem;
+  }
+
+  .shopx-promo-banner__text {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+  }
+
+  .shopx-promo-banner__button {
+    margin-block-start: 2rem;
+  }
+}

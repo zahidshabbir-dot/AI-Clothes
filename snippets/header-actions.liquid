@@ -63,6 +63,13 @@
   {% endif %}
   {{- block.shopify_attributes -}}
 >
+  {%- comment -%} shopx: wishlist and location icons from header settings. {%- endcomment -%}
+  {% render 'shopx-header-action',
+    link: section.settings.wishlist_link,
+    label: section.settings.wishlist_label,
+    icon: 'heart'
+  %}
+
   {% if shop.customer_accounts_enabled %}
     {% liquid
       assign account_actions_style = ''
@@ -112,6 +119,12 @@
       </shopify-account>
     </div>
   {% endif %}
+
+  {% render 'shopx-header-action',
+    link: section.settings.location_link,
+    label: section.settings.location_label,
+    icon: 'location'
+  %}
 
   {% if settings.cart_type == 'drawer' and template.name != 'cart' %}
     <button

@@ -1,0 +1,401 @@
+{{ 'shopx-footer.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign social_blocks = section.blocks | where: 'type', 'social_link'
+  assign has_social_links = false
+  for block in social_blocks
+    if block.settings.icon != blank and block.settings.link != blank
+      assign has_social_links = true
+    endif
+  endfor
+  assign has_payment_icons = false
+  if section.settings.show_payment_icons and shop.enabled_payment_types.size > 0
+    assign has_payment_icons = true
+  endif
+-%}
+
+<footer
+  class="shopx-footer"
+  style="
+    --shopx-footer-top-background: {{ section.settings.top_background_color }};
+    --shopx-footer-background: {{ section.settings.background_color }};
+    --shopx-footer-bottom-background: {{ section.settings.bottom_background_color }};
+    --shopx-footer-heading-color: {{ section.settings.heading_color }};
+    --shopx-footer-text-color: {{ section.settings.text_color }};
+  "
+>
+  {%- if has_social_links or has_payment_icons -%}
+    <div class="shopx-footer__top">
+      {%- if has_social_links -%}
+        <ul class="shopx-footer__social" role="list">
+          {%- for block in social_blocks -%}
+            {%- if block.settings.icon != blank and block.settings.link != blank -%}
+              {%- liquid
+                assign link_host = block.settings.link | split: '/' | slice: 2 | first
+                assign social_label = block.settings.label
+                if social_label == blank
+                  assign social_label = block.settings.icon.alt | default: link_host
+                endif
+              -%}
+              <li {{ block.shopify_attributes }}>
+                <a
+                  class="shopx-footer__social-link"
+                  href="{{ block.settings.link }}"
+                  aria-label="{{ social_label | escape }}"
+                >
+                  {{
+                    block.settings.icon
+                    | image_url: width: 96
+                    | image_tag:
+                      class: 'shopx-footer__social-icon',
+                      width: 32,
+                      height: 32,
+                      loading: 'lazy',
+                      alt: ''
+                  }}
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- if has_payment_icons -%}
+        <ul class="shopx-footer__payments" role="list">
+          {%- for payment_type in shop.enabled_payment_types -%}
+            <li>{{ payment_type | payment_type_svg_tag: class: 'shopx-footer__payment-icon' }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="shopx-footer__main">
+    <div class="shopx-footer__newsletter">
+      {%- if section.settings.newsletter_heading != blank -%}
+        <h2 class="shopx-footer__heading">{{ section.settings.newsletter_heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.newsletter_text != blank -%}
+        <p class="shopx-footer__newsletter-text">{{ section.settings.newsletter_text }}</p>
+      {%- endif -%}
+
+      {%- form 'customer', id: 'ShopxFooterNewsletter', class: 'shopx-footer__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <label class="visually-hidden" for="ShopxFooterNewsletterEmail">
+          {{- section.settings.email_label -}}
+        </label>
+        <input
+          id="ShopxFooterNewsletterEmail"
+          class="shopx-footer__input"
+          type="email"
+          name="contact[email]"
+          placeholder="{{ section.settings.email_label | escape }}"
+          autocomplete="email"
+          required
+        >
+        <button class="shopx-footer__submit" type="submit">
+          {{- section.settings.subscribe_label -}}
+        </button>
+        {%- if form.posted_successfully? -%}
+          <p class="shopx-footer__message" role="status">{{ section.settings.success_message }}</p>
+        {%- elsif form.errors -%}
+          <div class="shopx-footer__message" role="alert">
+            {{ form.errors | default_errors }}
+          </div>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+
+    {%- assign column_names = 'menu_1,account,menu_2,menu_3' | split: ',' -%}
+    {%- for column_name in column_names -%}
+      {%- if column_name == 'account' -%}
+        {%- if section.settings.show_account_links and shop.customer_accounts_enabled -%}
+          <nav class="shopx-footer__menu" aria-label="{{ section.settings.account_heading | escape }}">
+            <h2 class="shopx-footer__heading">{{ section.settings.account_heading }}</h2>
+            <ul class="shopx-footer__links" role="list">
+              {%- if customer -%}
+                <li>
+                  <a class="shopx-footer__link" href="{{ routes.account_url }}">
+                    {{- section.settings.account_label -}}
+                  </a>
+                </li>
+                <li>
+                  <a class="shopx-footer__link" href="{{ routes.account_logout_url }}">
+                    {{- section.settings.logout_label -}}
+                  </a>
+                </li>
+              {%- else -%}
+                <li>
+                  <a class="shopx-footer__link" href="{{ routes.account_login_url }}">
+                    {{- section.settings.login_label -}}
+                  </a>
+                </li>
+                <li>
+                  <a class="shopx-footer__link" href="{{ routes.account_register_url }}">
+                    {{- section.settings.register_label -}}
+                  </a>
+                </li>
+              {%- endif -%}
+            </ul>
+          </nav>
+        {%- endif -%}
+      {%- else -%}
+        {%- assign footer_menu = section.settings[column_name] -%}
+        {%- assign heading_setting = column_name | append: '_heading' -%}
+        {%- assign menu_heading = section.settings[heading_setting] | default: footer_menu.title -%}
+        {%- if footer_menu != blank and footer_menu.links.size > 0 -%}
+          <nav class="shopx-footer__menu" aria-label="{{ menu_heading | escape }}">
+            <h2 class="shopx-footer__heading">{{ menu_heading }}</h2>
+            <ul class="shopx-footer__links" role="list">
+              {%- for link in footer_menu.links -%}
+                <li>
+                  <a class="shopx-footer__link" href="{{ link.url }}">{{ link.title }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  <div class="shopx-footer__bottom">
+    <p class="shopx-footer__copyright">
+      &copy;{{ 'now' | date: '%Y' }}
+      <span class="shopx-footer__shop-name">{{ shop.name }}</span>
+      {{ section.settings.copyright_text }}
+    </p>
+    {%- if section.settings.legal_menu != blank -%}
+      <ul class="shopx-footer__legal" role="list">
+        {%- for link in section.settings.legal_menu.links -%}
+          <li>
+            <a class="shopx-footer__link" href="{{ link.url }}">{{ link.title }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- elsif section.settings.show_policy_links and shop.policies.size > 0 -%}
+      <ul class="shopx-footer__legal" role="list">
+        {%- for policy in shop.policies -%}
+          <li>
+            <a class="shopx-footer__link" href="{{ policy.url }}">{{ policy.title }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "ShopX footer",
+  "tag": "section",
+  "class": "shopx-footer-section",
+  "enabled_on": {
+    "groups": [
+      "footer"
+    ]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email field label",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "subscribe_label",
+      "label": "Subscribe button label",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "Thanks for subscribing."
+    },
+    {
+      "type": "header",
+      "content": "Menus"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_1",
+      "label": "Menu 1",
+      "info": "Shows the menu title as the heading unless you set one."
+    },
+    {
+      "type": "text",
+      "id": "menu_1_heading",
+      "label": "Menu 1 heading"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_2",
+      "label": "Menu 2"
+    },
+    {
+      "type": "text",
+      "id": "menu_2_heading",
+      "label": "Menu 2 heading"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_3",
+      "label": "Menu 3"
+    },
+    {
+      "type": "text",
+      "id": "menu_3_heading",
+      "label": "Menu 3 heading"
+    },
+    {
+      "type": "header",
+      "content": "Account column"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account_links",
+      "label": "Show account links",
+      "info": "Uses Shopify customer accounts. Shown after menu 1.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "account_heading",
+      "label": "Heading",
+      "default": "My Account"
+    },
+    {
+      "type": "text",
+      "id": "login_label",
+      "label": "Log in label",
+      "default": "Log In"
+    },
+    {
+      "type": "text",
+      "id": "register_label",
+      "label": "Register label",
+      "default": "Register"
+    },
+    {
+      "type": "text",
+      "id": "account_label",
+      "label": "Account label",
+      "default": "My account"
+    },
+    {
+      "type": "text",
+      "id": "logout_label",
+      "label": "Log out label",
+      "default": "Log out"
+    },
+    {
+      "type": "link_list",
+      "id": "legal_menu",
+      "label": "Bottom bar menu",
+      "info": "Empty shows your store policies from Shopify."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_policy_links",
+      "label": "Show store policies when the bottom bar menu is empty",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Bottom bar"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Text after shop name",
+      "default": "All Rights reserved"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "info": "Uses the payment methods enabled in Shopify.",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "color",
+      "id": "top_background_color",
+      "label": "Top bar background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#fcf9f7"
+    },
+    {
+      "type": "color",
+      "id": "bottom_background_color",
+      "label": "Bottom bar background",
+      "default": "#e9e1db"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading colour",
+      "default": "#202020"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#4a4a4a"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "social_link",
+      "name": "Social link",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Accessible name",
+          "info": "Read by screen readers, for example YouTube. Empty uses the icon's alt text or the link's website."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "ShopX footer"
+    }
+  ]
+}
+{% endschema %}
