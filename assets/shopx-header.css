@@ -1,0 +1,30 @@
+.shopx-header-action {
+  align-items: center;
+  text-decoration: none;
+}
+
+.shopx-header-action svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.shopx-header-action:focus-visible {
+  outline: 2px solid currentcolor;
+  outline-offset: 2px;
+}
+
+@media screen and (min-width: 750px) {
+  .header__row--top header-actions {
+    gap: 1.5rem;
+  }
+
+  .header__row--top .menu-list__link {
+    padding-block: 1.8125rem;
+    padding-inline: 1.5rem;
+    border-block-end: 2px solid transparent;
+  }
+
+  .header__row--top .menu-list__link--active {
+    border-block-end-color: currentcolor;
+  }
+}

@@ -29,11 +29,18 @@
     {{ block.shopify_attributes }}
     aria-hidden="{% if block_index == 0 %}false{% else %}true{% endif %}"
   >
-    <p class="announcement-bar__text">
-      {{ block.settings.text }}
-    </p>
+    {%- comment -%}
+      shopx: a countdown or a button switches the slide to the shopx layout.
+    {%- endcomment -%}
+    {%- if block_settings.countdown_end != blank or block_settings.button_label != blank -%}
+      {% render 'shopx-announcement-extras', block: block %}
+    {%- else -%}
+      <p class="announcement-bar__text">
+        {{ block.settings.text }}
+      </p>
+    {%- endif -%}
 
-    {% if block_settings.link != blank %}
+    {% if block_settings.link != blank and block_settings.button_label == blank %}
       <a
         class="announcement-bar__link"
         href="{{ block_settings.link }}"
@@ -61,6 +68,68 @@
       "type": "url",
       "id": "link",
       "label": "t:settings.link"
+    },
+    {
+      "type": "header",
+      "content": "Countdown"
+    },
+    {
+      "type": "text",
+      "id": "countdown_end",
+      "label": "Countdown end date and time",
+      "info": "Leave empty for no countdown. Example: 2026-12-31T23:59:00+05:00"
+    },
+    {
+      "type": "text",
+      "id": "days_label",
+      "label": "Days label",
+      "default": "Days"
+    },
+    {
+      "type": "text",
+      "id": "hours_label",
+      "label": "Hours label",
+      "default": "Hours"
+    },
+    {
+      "type": "text",
+      "id": "minutes_label",
+      "label": "Minutes label",
+      "default": "Minutes"
+    },
+    {
+      "type": "text",
+      "id": "seconds_label",
+      "label": "Seconds label",
+      "default": "Seconds"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "info": "Leave empty for no button."
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "info": "Empty links go to all products."
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button background",
+      "default": "#392915"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
     },
     {
       "type": "header",

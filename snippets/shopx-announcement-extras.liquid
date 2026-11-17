@@ -1,0 +1,62 @@
+{%- comment -%}
+  Renders the announcement text with an optional countdown and button.
+
+  Accepts:
+  - block: the _announcement block.
+{%- endcomment -%}
+{%- assign block_settings = block.settings -%}
+{%- assign button_link = block_settings.button_link | default: routes.all_products_collection_url -%}
+
+{{ 'shopx-announcement.css' | asset_url | stylesheet_tag }}
+
+<div
+  class="shopx-announcement"
+  style="
+    --shopx-announcement-button-background: {{ block_settings.button_background_color }};
+    --shopx-announcement-button-text: {{ block_settings.button_text_color }};
+  "
+>
+  <p class="announcement-bar__text shopx-announcement__text">
+    {{ block_settings.text }}
+  </p>
+
+  {%- if block_settings.countdown_end != blank -%}
+    <div
+      class="shopx-announcement__countdown"
+      role="timer"
+      data-shopx-announcement-countdown
+      data-shopx-announcement-countdown-end="{{ block_settings.countdown_end | escape }}"
+      hidden
+    >
+      {%- assign unit_names = 'days,hours,minutes,seconds' | split: ',' -%}
+      {%- assign unit_labels = block_settings.days_label
+        | append: ',' | append: block_settings.hours_label
+        | append: ',' | append: block_settings.minutes_label
+        | append: ',' | append: block_settings.seconds_label
+        | split: ','
+      -%}
+      {%- for unit_name in unit_names -%}
+        <span class="shopx-announcement__unit">
+          <span
+            class="shopx-announcement__number"
+            data-shopx-announcement-countdown-unit="{{ unit_name }}"
+          >00</span>
+          <span class="shopx-announcement__unit-label">{{ unit_labels[forloop.index0] }}</span>
+        </span>
+        {%- unless forloop.last -%}
+          <span class="shopx-announcement__separator" aria-hidden="true">:</span>
+        {%- endunless -%}
+      {%- endfor -%}
+    </div>
+    <script src="{{ 'shopx-announcement.js' | asset_url }}" defer></script>
+  {%- endif -%}
+
+  {%- if block_settings.button_label != blank -%}
+    <a
+      class="shopx-announcement__button"
+      href="{{ button_link }}"
+    >
+      {{- block_settings.button_label -}}
+    </a>
+  {%- endif -%}
+</div>

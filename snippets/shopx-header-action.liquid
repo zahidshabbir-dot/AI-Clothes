@@ -1,0 +1,22 @@
+{%- doc -%}
+  Header icon link used for the wishlist and location actions.
+  Renders nothing when the link is empty.
+
+  @param {string} link - Destination URL.
+  @param {string} label - Accessible name.
+  @param {string} icon - Icon name: 'heart' or 'location'.
+{%- enddoc -%}
+{%- if link != blank -%}
+  <a
+    class="header-actions__action shopx-header-action"
+    href="{{ link }}"
+    aria-label="{{ label }}"
+  >
+    {%- case icon -%}
+      {%- when 'heart' -%}
+        {% render 'shopx-icon-heart' %}
+      {%- when 'location' -%}
+        {% render 'shopx-icon-location' %}
+    {%- endcase -%}
+  </a>
+{%- endif -%}
