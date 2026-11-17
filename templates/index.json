@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "hero_jVaWmY": {
       "type": "hero",
@@ -15,7 +16,6 @@
           "type": "text",
           "settings": {
             "text": "<p>Style Revamp</p>",
-            "text_color": "#202020",
             "width": "fit-content",
             "max_width": "none",
             "alignment": "left",
@@ -26,6 +26,7 @@
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
+            "text_color": "#202020",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -40,7 +41,6 @@
           "type": "text",
           "settings": {
             "text": "<p><strong>50% OFF</strong></p>",
-            "text_color": "#202020",
             "width": "fit-content",
             "max_width": "none",
             "alignment": "left",
@@ -51,6 +51,7 @@
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
+            "text_color": "#202020",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -65,7 +66,6 @@
           "type": "text",
           "settings": {
             "text": "<p>Unleash your style and save big with 50% off on clothing.</p>",
-            "text_color": "#4a4a4a",
             "width": "fit-content",
             "max_width": "narrow",
             "alignment": "left",
@@ -76,6 +76,7 @@
             "letter_spacing": "normal",
             "case": "none",
             "wrap": "pretty",
+            "text_color": "#4a4a4a",
             "background": false,
             "background_color": "#00000026",
             "corner_radius": 0,
@@ -97,6 +98,7 @@
             "custom_button_background": "#392915",
             "custom_button_text": "#ffffff",
             "custom_button_border": "#392915",
+            "link_text_color": "",
             "width": "fit-content",
             "custom_width": 100,
             "width_mobile": "fit-content",
@@ -114,12 +116,18 @@
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
+        "image_1": "shopify://shop_images/Component_1000001356.png",
         "media_type_2": "image",
         "stack_media_on_mobile": false,
         "custom_mobile_media": false,
         "media_type_1_mobile": "image",
         "media_type_2_mobile": "image",
+        "link": "",
         "open_in_new_tab": false,
+        "layout_style": "split",
+        "mobile_text_color": "#ffffff",
+        "mobile_button_background_color": "#ffffff",
+        "mobile_button_text_color": "#392915",
         "content_direction": "column",
         "vertical_on_mobile": true,
         "horizontal_alignment": "space-between",
@@ -139,8 +147,7 @@
         "blurred_reflection": false,
         "reflection_opacity": 75,
         "padding-block-start": 0,
-        "padding-block-end": 0,
-        "layout_style": "split"
+        "padding-block-end": 0
       }
     },
     "shopx_features": {
@@ -149,6 +156,7 @@
         "feature_1": {
           "type": "feature",
           "settings": {
+            "icon": "shopify://shop_images/truck.svg",
             "title": "Free Shipping",
             "text": "on AU orders $80+"
           }
@@ -156,6 +164,7 @@
         "feature_2": {
           "type": "feature",
           "settings": {
+            "icon": "shopify://shop_images/reset.svg",
             "title": "Easy Returns",
             "text": "for your perfect fit"
           }
@@ -163,6 +172,7 @@
         "feature_3": {
           "type": "feature",
           "settings": {
+            "icon": "shopify://shop_images/heart.svg",
             "title": "Loved By Thousands",
             "text": "who come back for more"
           }
@@ -170,6 +180,7 @@
         "feature_4": {
           "type": "feature",
           "settings": {
+            "icon": "shopify://shop_images/padlock.svg",
             "title": "Secure Payments",
             "text": "AfterPay available"
           }
@@ -195,25 +206,37 @@
         "tile_1": {
           "type": "tile",
           "settings": {
-            "title": "Shop"
+            "collection": "daily-essentials",
+            "image": "shopify://shop_images/Frame_31.png",
+            "title": "Shop",
+            "link": ""
           }
         },
         "tile_2": {
           "type": "tile",
           "settings": {
-            "title": "Accessories"
+            "collection": "java-coffee",
+            "image": "shopify://shop_images/Frame_32.png",
+            "title": "Accessories",
+            "link": ""
           }
         },
         "tile_3": {
           "type": "tile",
           "settings": {
-            "title": "Virtual Try-on"
+            "collection": "black",
+            "image": "shopify://shop_images/Frame_30.png",
+            "title": "Virtual Try-on",
+            "link": ""
           }
         },
         "tile_4": {
           "type": "tile",
           "settings": {
-            "title": "Community"
+            "collection": "hard",
+            "image": "shopify://shop_images/Component_1000001371.png",
+            "title": "Community",
+            "link": ""
           }
         }
       },
@@ -232,50 +255,33 @@
     },
     "shopx_product_carousel": {
       "type": "shopx-product-carousel",
-      "settings": {
-        "heading": "Fashion Sensations",
-        "products_to_show": 8,
-        "sale_badge_label": "[percent]% OFF",
-        "quick_add_label": "Quick Add",
-        "background_color": "#ffffff",
-        "heading_color": "#202020",
-        "text_color": "#202020",
-        "muted_text_color": "#4a4a4a",
-        "button_background_color": "#202020",
-        "button_text_color": "#ffffff",
-        "padding_top": 80,
-        "padding_bottom": 80,
-        "new_badge_tag": "new",
-        "new_badge_label": "NEW",
-        "previous_label": "Previous products",
-        "next_label": "Next products",
-        "tab_active_background_color": "#f2f3f4",
-        "line_color": "#e8e8e8",
-        "price_from_label": "From"
-      },
       "blocks": {
         "tab_all": {
           "type": "tab",
           "settings": {
-            "label": "ALL"
+            "label": "ALL",
+            "collection": ""
           }
         },
         "tab_womens": {
           "type": "tab",
           "settings": {
-            "label": "WOMEN'S"
+            "label": "WOMEN'S",
+            "collection": ""
           }
         },
         "tab_mens": {
           "type": "tab",
           "settings": {
-            "label": "MENS"
+            "label": "MENS",
+            "collection": ""
           }
         },
         "tab_accessories": {
           "type": "tab",
           "settings": {
-            "label": "ACCESSORIES"
+            "label": "ACCESSORIES",
+            "collection": ""
           }
         }
       },
@@ -284,57 +290,27 @@
         "tab_womens",
         "tab_mens",
         "tab_accessories"
-      ]
-    },
-    "shopx_promo_banner": {
-      "type": "shopx-promo-banner",
-      "settings": {
-        "heading": "Customize Your Outfit",
-        "text": "Customize your outfit and express your unique style by adding a personal touch.",
-        "button_label": "Customize Outfit",
-        "background_color": "#f7f4f2",
-        "heading_color": "#202020",
-        "text_color": "#4a4a4a",
-        "button_background_color": "#392915",
-        "button_text_color": "#ffffff",
-        "padding_top": 124,
-        "padding_bottom": 124
-      }
-    },
-    "shopx_gallery": {
-      "type": "shopx-gallery",
-      "blocks": {
-        "image_1": {
-          "type": "image",
-          "settings": {}
-        },
-        "image_2": {
-          "type": "image",
-          "settings": {}
-        },
-        "image_3": {
-          "type": "image",
-          "settings": {}
-        },
-        "image_4": {
-          "type": "image",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "image_1",
-        "image_2",
-        "image_3",
-        "image_4"
       ],
       "settings": {
-        "heading": "Stay Fashionable",
-        "subheading": "Follow Us on Instagram!",
-        "handle": "@METANOIA",
+        "heading": "Fashion Sensations",
+        "products_to_show": 8,
+        "sale_badge_label": "[percent]% OFF",
+        "new_badge_tag": "new",
+        "new_badge_label": "NEW",
+        "quick_add_label": "Quick Add",
+        "price_from_label": "From",
+        "previous_label": "Previous products",
+        "next_label": "Next products",
         "background_color": "#ffffff",
+        "heading_color": "#202020",
         "text_color": "#202020",
+        "muted_text_color": "#4a4a4a",
+        "button_background_color": "#202020",
+        "button_text_color": "#ffffff",
+        "tab_active_background_color": "#f2f3f4",
+        "line_color": "#e8e8e8",
         "padding_top": 80,
-        "padding_bottom": 0
+        "padding_bottom": 80
       }
     },
     "shopx_countdown_banner": {
@@ -342,7 +318,7 @@
       "settings": {
         "heading": "Up to 50% Off",
         "subheading": "Hurry up! Offers end in",
-        "countdown_end": "",
+        "countdown_end": "2026-12-31T23:59:00+05:00",
         "days_label": "Days",
         "hours_label": "Hours",
         "minutes_label": "Minutes",
@@ -351,6 +327,23 @@
         "text_color": "#202020",
         "padding_top": 48,
         "padding_bottom": 48
+      }
+    },
+    "shopx_promo_banner": {
+      "type": "shopx-promo-banner",
+      "settings": {
+        "image": "shopify://shop_images/Frame_44.png",
+        "heading": "Customize Your Outfit",
+        "text": "Customize your outfit and express your unique style by adding a personal touch.",
+        "button_label": "Customize Outfit",
+        "button_link": "",
+        "background_color": "#f7f4f2",
+        "heading_color": "#202020",
+        "text_color": "#4a4a4a",
+        "button_background_color": "#392915",
+        "button_text_color": "#ffffff",
+        "padding_top": 124,
+        "padding_bottom": 124
       }
     },
     "shopx_comparison": {
@@ -427,49 +420,57 @@
         "question_1": {
           "type": "question",
           "settings": {
-            "question": "What is your return policy?"
+            "question": "What is your return policy?",
+            "answer": ""
           }
         },
         "question_2": {
           "type": "question",
           "settings": {
-            "question": "How do I return my order?"
+            "question": "How do I return my order?",
+            "answer": ""
           }
         },
         "question_3": {
           "type": "question",
           "settings": {
-            "question": "How do I pay with Tabby?"
+            "question": "How do I pay with Tabby?",
+            "answer": ""
           }
         },
         "question_4": {
           "type": "question",
           "settings": {
-            "question": "I forgot my password. What do I do?"
+            "question": "I forgot my password. What do I do?",
+            "answer": ""
           }
         },
         "question_5": {
           "type": "question",
           "settings": {
-            "question": "What payment methods do you accept?"
+            "question": "What payment methods do you accept?",
+            "answer": ""
           }
         },
         "question_6": {
           "type": "question",
           "settings": {
-            "question": "How are Metanoia fabrics made?"
+            "question": "How are Metanoia fabrics made?",
+            "answer": ""
           }
         },
         "question_7": {
           "type": "question",
           "settings": {
-            "question": "How do I care for Metanoia fabrics?"
+            "question": "How do I care for Metanoia fabrics?",
+            "answer": ""
           }
         },
         "question_8": {
           "type": "question",
           "settings": {
-            "question": "How do I use a voucher code?"
+            "question": "How do I use a voucher code?",
+            "answer": ""
           }
         }
       },
@@ -492,6 +493,51 @@
         "line_color": "#e2e2e2",
         "padding_top": 80,
         "padding_bottom": 80
+      }
+    },
+    "shopx_gallery": {
+      "type": "shopx-gallery",
+      "blocks": {
+        "image_1": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "image_2": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "image_3": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        },
+        "image_4": {
+          "type": "image",
+          "settings": {
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_1",
+        "image_2",
+        "image_3",
+        "image_4"
+      ],
+      "settings": {
+        "heading": "Stay Fashionable",
+        "subheading": "Follow Us on Instagram!",
+        "handle": "@METANOIA",
+        "handle_link": "",
+        "background_color": "#ffffff",
+        "text_color": "#202020",
+        "padding_top": 80,
+        "padding_bottom": 0
       }
     }
   },
